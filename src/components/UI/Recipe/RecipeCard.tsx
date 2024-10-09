@@ -34,7 +34,7 @@ export default function RecipeCard({ recipe }: { recipe: IRecipe }) {
         </div>
         <h2 className="text-gray-600 mb-2">
           Posted by{" "}
-          <Link className="underline text-blue-600" href={`profile/${recipe.author._id}`}>
+          <Link className="underline text-blue-600" href={`/profile/${recipe.author._id}`}>
             <b>
               <i>{recipe?.author?.name}</i>
             </b>
