@@ -1,7 +1,7 @@
  
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { addComment, addRating, createVote, deleteComment,   updateComment } from "../services/RecipeService";
+import { addComment, addRating, createVote, deleteComment,   getAllRecipes,   updateComment } from "../services/RecipeService";
 import { getRecipesByUserId } from "../services/UserServices";
 
 
@@ -13,6 +13,13 @@ export const useGetRecipesByUserId = (userId: string) => {
   });
 };
 
+export const useGetAllRecipe = () => {
+    return useQuery<any, Error, any, string[]>({
+        queryKey: ["GET_RECIPE"],
+        queryFn: async () => await getAllRecipes(),
+
+    })
+}
  
 
 

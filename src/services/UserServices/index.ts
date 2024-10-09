@@ -19,6 +19,17 @@ export const getSingleUserById = async (userId: string) => {
   };
   
 
+// logging user
+
+export const getLoggedUser = async () => {
+    try {
+      const { data } = await axiosInstance.get("/user/");
+      return data;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
   
 export const getRecipesByUserId = async (id: string) => {
     let fetchOptions = {};

@@ -1,6 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { addfollowUser, addUnfollowUser } from "../services/UserServices";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { addfollowUser, addUnfollowUser, getLoggedUser } from "../services/UserServices";
 import { toast } from "sonner";
+
+
+
+export const useGetAuthUser = () => {
+    return useQuery<any, Error, any, string[]>({
+        queryKey: ["GET_ME"],
+        queryFn: async () => await getLoggedUser()
+    })
+  }
+
 
 // Hook for adding a follow
 export const useAddFollow = () => {
@@ -30,3 +40,4 @@ export const useAddFollow = () => {
     });
   };
   
+
