@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/input";
 
 export default async function Home() {
   const { data: { recipes } } = await getAllRecipes();
-
+console.log(recipes)
   return (
     <section className="py-10">
       {/* Search Bar */}
