@@ -17,22 +17,20 @@ export const CreateRecipe = async (recipeData: FormData): Promise<any> => {
   }
 };
 
-export const DeleteRecipe = async (id: string,) => {
-
-    const { data } = await axiosInstance.delete(`/recipe/${id}`);
-    return data;
+export const DeleteRecipe = async (id: string) => {
+  const { data } = await axiosInstance.delete(`/recipe/${id}`);
+  return data;
 };
-
 
 export const getAllRecipes = async () => {
   let fetchOptions = {};
   fetchOptions = {
-    cache: "no-cache",
+    cache: "no-store",
   };
-  const res = await fetch(`${envConfig.baseApi}/recipe`, fetchOptions);
-
-  return res.json();
+  const { data } = await axiosInstance.get("/recipe", fetchOptions);
+  return data;
 };
+
 
 export const getSingleRecipesById = async (id: string) => {
   let fetchOptions = {};

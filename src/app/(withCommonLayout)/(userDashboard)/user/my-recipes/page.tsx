@@ -11,7 +11,7 @@ import RecipeTable from "@/src/components/UI/userDashboard/RecipeTable";
 
 const MyRecipesPage = () => {
   const { user } = useUser();
-  const { data, isPending, isSuccess } = useGetAllRecipe();
+  const { data, isPending,  } = useGetAllRecipe();
 
   // Filter recipes based on the user's ID
   const recipes = data?.data?.recipes.filter((recipe: IRecipe) => {

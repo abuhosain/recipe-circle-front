@@ -48,21 +48,19 @@ const UserDashboardLayout = ({
                 </p>
               </Link>
 
-              
-                <Link href="/admin/manage-users">
-                  <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                    <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
-                    <span className="ml-3 hidden lg:block">Manage Users</span>
-                  </p>
-                </Link>
-               
-                <Link href="/admin/create-admin">
-                  <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                    <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
-                    <span className="ml-3 hidden lg:block">Create Admin</span>
-                  </p>
-                </Link>
-              
+              <Link href="/admin/manage-users">
+                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
+                  <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
+                  <span className="ml-3 hidden lg:block">Manage Users</span>
+                </p>
+              </Link>
+
+              <Link href="/admin/create-admin">
+                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
+                  <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
+                  <span className="ml-3 hidden lg:block">Create Admin</span>
+                </p>
+              </Link>
             </nav>
           </div>
         </div>

@@ -24,7 +24,7 @@ export const useCreateRecipe = () => {
 
 export const useDeleteRecipe = () => {
     return useMutation<CreateRecipeResponse, Error, string>({
-        mutationKey: ["UPDATE_RECIPE"],
+        mutationKey: ["DELETE_RECIPE"],
         mutationFn: async (recipeId) => await DeleteRecipe(recipeId),
         onSuccess: () => {
             toast.success(" Delete Recipe  successfully");
