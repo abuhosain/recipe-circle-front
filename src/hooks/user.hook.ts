@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { addfollowUser, addUnfollowUser, getLoggedUser } from "../services/UserServices";
+import { addfollowUser, addUnfollowUser, getLoggedUser, GetMeAnUpdate } from "../services/UserServices";
 import { toast } from "sonner";
 
 
@@ -9,8 +9,24 @@ export const useGetAuthUser = () => {
         queryKey: ["GET_ME"],
         queryFn: async () => await getLoggedUser()
     })
-  }
+  };
 
+
+export const useGetMeAnUpdate = () => {
+    return useMutation<any, Error, FormData>({
+        mutationKey: ["USER_PROFILE_UPDATE"],
+        mutationFn: async (meUpdateData) => {
+            return await GetMeAnUpdate(meUpdateData)
+        },
+        onSuccess: () => {
+            toast.success('Update My Profile  Successfully')
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        }
+    })
+
+}
 
 // Hook for adding a follow
 export const useAddFollow = () => {
