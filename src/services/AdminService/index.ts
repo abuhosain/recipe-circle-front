@@ -28,3 +28,17 @@ export const UnBlockUser = async (id: string) => {
   const { data } = await axiosInstance.put(`/admin/unblock/${id}`);
   return data;
 };
+
+
+// publish recipe
+export const publishRecipe = async (id: string) => {
+  const { data } = await axiosInstance.put(`/admin/publish//${id}`);
+  return data;
+};
+// publish recipe
+export const unPublishRecipe = async (id: string) => {
+  const { data } = await axiosInstance.put(`/admin/unpublish//${id}`);
+  return data;
+};
+
+
