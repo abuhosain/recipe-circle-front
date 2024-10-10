@@ -1,13 +1,13 @@
 "use client";
 
 import AdminRecipeDetails from "@/src/components/UI/adminDashboard/AdminRecipeDetails";
-import { useGetAllRecipe } from "@/src/hooks/recipe.hook";
-
+import { useGetAllRecipeByAdmin } from "@/src/hooks/admin.hook";
+ 
  
 export default function Page() {
-  const { data, isPending } = useGetAllRecipe();
-  const recipes = data?.data?.recipes || []; // Safely access recipes or default to an empty array
-
+  const { data, isPending } = useGetAllRecipeByAdmin();
+  const recipes = data?.data || []; // Safely access recipes or default to an empty array
+console.log(data)
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Manage Recipes</h1>

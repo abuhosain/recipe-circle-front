@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {  BlockUser, DeleteUser, getAllUser, publishRecipe, unPublishRecipe } from "../services/AdminService";
+import {  BlockUser, DeleteUser, getAllRecipesByAdmin, getAllUser, publishRecipe, unPublishRecipe } from "../services/AdminService";
 import { toast } from "sonner";
 interface CreateRecipeResponse {
     message: string;
@@ -11,6 +11,16 @@ export const useGetAllUser = () => {
     queryFn: async () => await getAllUser(),
   });
 };
+
+export const useGetAllRecipeByAdmin = () => {
+    return useQuery<any, Error, any, string[]>({
+        queryKey: ["GET_RECIPE"],
+        queryFn: async () => await getAllRecipesByAdmin(),
+
+    })
+}
+ 
+
 
 // delete user
 export const useDeleteUser = () => {
