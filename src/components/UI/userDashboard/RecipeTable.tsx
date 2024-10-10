@@ -1,14 +1,30 @@
 // src/components/UI/Recipe/RecipeTable.tsx
+"use client"; // Ensure this is a client component
+
+import { useDeleteRecipe } from "@/src/hooks/recipe.hook"; // Import the hook for deleting recipes
 import { IRecipe } from "@/src/types";
+import { toast } from "react-toastify"; // Import toast for notifications
 
 interface RecipeTableProps {
   recipes: IRecipe[];
   isLoading: boolean; // Loading state
-  onDelete: (id: string) => void; // Function to handle recipe deletion
-  onUpdate: (id: string) => void; // Function to handle recipe update
 }
 
-const RecipeTable = ({ recipes, isLoading, onDelete, onUpdate }: RecipeTableProps) => {
+const RecipeTable = ({ recipes, isLoading }: RecipeTableProps) => {
+  const { mutate: deleteRecipe, isPending: isDeleting } = useDeleteRecipe(); // Destructure the hook
+
+  const handleDelete = async (id: string) => {
+    console.log(id)
+    if (confirm("Are you sure you want to delete this recipe?")) {
+      try {
+        await deleteRecipe(id); // Call the delete function from the hook
+        toast.success("Recipe deleted successfully!"); // Show success message
+      } catch (error) {
+        toast.error("Failed to delete the recipe."); // Handle error case
+      }
+    }
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200 rounded-lg">
@@ -34,7 +50,7 @@ const RecipeTable = ({ recipes, isLoading, onDelete, onUpdate }: RecipeTableProp
               <tr key={recipe._id} className="border-b border-gray-200 hover:bg-gray-100">
                 <td className="py-2 px-4">
                   <img
-                    src={recipe?.images?.[1]}
+                    src={recipe?.images?.[0] || "/placeholder.png"} // Fallback image if none available
                     alt={recipe.title}
                     className="w-16 h-16 object-cover rounded-md"
                   />
@@ -44,15 +60,18 @@ const RecipeTable = ({ recipes, isLoading, onDelete, onUpdate }: RecipeTableProp
                 <td className="py-2 px-4 flex space-x-2">
                   <button
                     className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
-                    onClick={() => onUpdate(recipe._id)}
+                    // Add update functionality here
                   >
                     Update
                   </button>
                   <button
-                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                    onClick={() => onDelete(recipe._id)}
+                    className={`bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ${
+                      isDeleting ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    onClick={() => handleDelete(recipe._id)}
+                    disabled={isDeleting} // Disable button while deleting
                   >
-                    Delete
+                    {isDeleting ? "Deleting..." : "Delete"}
                   </button>
                 </td>
               </tr>

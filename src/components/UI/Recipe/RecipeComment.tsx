@@ -2,7 +2,7 @@
 
  
 import { useAddComment, useDeleteComment, useUpdateComment } from '@/src/hooks/recipe.hook';
-import { IRecipe } from '@/src/types';
+import { IRecipe, IUser } from '@/src/types';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -14,7 +14,7 @@ interface Comment {
 
 interface CommentSectionProps {
   recipe: IRecipe; 
-  currentUser: { name: string; email: string; userName: string; profilePicture: string; role: string };
+  currentUser: IUser;
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) => {

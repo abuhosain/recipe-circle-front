@@ -13,6 +13,7 @@ export default function FXInput({
   type = "text",
   label,
   name,
+   
 }: IProps) {
   const {
     register,
@@ -28,6 +29,7 @@ export default function FXInput({
       label={label}
       size={size}
       required={required}
+      
     />
   );
 }

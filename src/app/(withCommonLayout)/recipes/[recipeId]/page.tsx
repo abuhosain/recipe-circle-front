@@ -11,7 +11,7 @@ interface IProps {
 }
 export default async function RecipeDetailsPage({ params: { recipeId } }: IProps) {
   // console.log("id", recipeId);
-  const user = await getCurrentUser();
+  const user : any = await getCurrentUser();
   const { data: recipe } = await getSingleRecipesById(recipeId);
   return (
     <Container>

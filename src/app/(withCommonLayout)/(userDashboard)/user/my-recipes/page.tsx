@@ -19,16 +19,6 @@ const MyRecipesPage = () => {
     return authorId === user?.id; // Keep the recipe if the IDs match
   }) || [];
 
-  const handleDelete = (id: string) => {
-    // Implement the deletion logic here
-    console.log(`Delete recipe with id: ${id}`);
-  };
-
-  const handleUpdate = (id: string) => {
-    // Implement the update logic here (e.g., navigate to the update form)
-    console.log(`Update recipe with id: ${id}`);
-  };
-
   return (
     <div>
       <h3 className="text-2xl font-bold mb-4">My Recipes</h3>
@@ -40,8 +30,7 @@ const MyRecipesPage = () => {
       <RecipeTable
         recipes={recipes  || []}
         isLoading={isPending}
-        onDelete={handleDelete}
-        onUpdate={handleUpdate}
+       
       />
     </div>
   );

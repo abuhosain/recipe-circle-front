@@ -39,7 +39,7 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
                   <span className="ml-3 hidden lg:block">Create Recipe</span>
                 </p>
               </Link>
-              <Link href="/user/update">
+              <Link href="/user/edit-profile">
                 <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
                   <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
                   <span className="ml-3 hidden lg:block">Update User</span>

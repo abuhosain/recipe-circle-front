@@ -1,8 +1,39 @@
  
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { addComment, addRating, createVote, deleteComment,   getAllRecipes,   updateComment } from "../services/RecipeService";
+import { addComment, addRating, CreateRecipe, createVote, deleteComment,   DeleteRecipe,   getAllRecipes,   updateComment } from "../services/RecipeService";
 import { getRecipesByUserId } from "../services/UserServices";
+
+interface CreateRecipeResponse {
+    message: string;
+    success: boolean;
+}
+
+export const useCreateRecipe = () => {
+    return useMutation<CreateRecipeResponse, Error, FormData>({
+        mutationKey: ["CREATE_RECIPE"],
+        mutationFn: async (recipeData) => await CreateRecipe(recipeData),
+        onSuccess: () => {
+            toast.success("Recipe created successfully");
+        },
+        onError: (error) => {
+            toast.error(`Error creating recipe: ${error.message}`);
+        },
+    });
+};
+
+export const useDeleteRecipe = () => {
+    return useMutation<CreateRecipeResponse, Error, string>({
+        mutationKey: ["UPDATE_RECIPE"],
+        mutationFn: async (recipeId) => await DeleteRecipe(recipeId),
+        onSuccess: () => {
+            toast.success(" Delete Recipe  successfully");
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+};
 
 
 export const useGetRecipesByUserId = (userId: string) => {

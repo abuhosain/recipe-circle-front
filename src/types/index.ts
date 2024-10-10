@@ -11,6 +11,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   userName: string;
   role: string;
   profilePicture: string;
+   
 }
 
 export interface IInput {
