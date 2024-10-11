@@ -73,3 +73,60 @@ export const getNewAccessToken = async () => {
       throw new Error("Failed to get new access token");
     }
   };
+
+
+
+  // password management
+
+  
+export const forgotPassword = async (userData: FieldValues) => {
+  try {
+      const { data } = await axiosInstance.post('/auth/forget-password', userData);
+      return data;
+  } catch (error: any) {
+
+      throw new Error(error)
+  }
+}
+
+
+
+export const resetPassword = async (userData: FieldValues) => {
+  try {
+      const { data } = await axiosInstance.post('/auth/reset-password',
+          {
+              newPassword: userData.newPassword
+              , email: userData.email
+          },
+          {
+              headers: {
+                  Authorization: userData.token,
+              }
+          });
+      return data;
+  } catch (error: any) {
+
+      throw new Error(error)
+  }
+}
+
+
+
+export const changePassword = async (passwordData: FieldValues) => {
+  try {
+      const { data } = await axiosInstance.post('/auth/change-password', passwordData);
+      return data;
+  } catch (error: any) {
+
+      throw new Error(error)
+  }
+}
+
+
+export const cureentUserChecker = async () => {
+
+  const token = cookies().get("accessToken")?.value;
+
+  return token;
+
+}
