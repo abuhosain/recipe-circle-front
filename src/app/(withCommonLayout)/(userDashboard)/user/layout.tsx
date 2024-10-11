@@ -60,13 +60,13 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
       <div className="w-full ">
         {/* Membership Section */}
         <div className="bg-blue-50 rounded-lg shadow-md p-6 mb-8 text-center">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">Become a Member</h3>
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">Become a Premium Member</h3>
           <p className="text-gray-600 mb-4">
             Enjoy exclusive content and features by joining our membership!
           </p>
-          <Link href="/membership z-0">
+          <Link href="/membership">
             <Button color="success" className="w-full">
-              Get Membership
+              Get Premium Membership
             </Button>
           </Link>
         </div>
