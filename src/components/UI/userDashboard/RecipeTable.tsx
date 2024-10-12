@@ -3,6 +3,7 @@
 
 import { useDeleteRecipe } from "@/src/hooks/recipe.hook"; // Import the hook for deleting recipes
 import { IRecipe } from "@/src/types";
+import Link from "next/link";
 import { toast } from "react-toastify"; // Import toast for notifications
 
 interface RecipeTableProps {
@@ -58,12 +59,13 @@ const RecipeTable = ({ recipes, isLoading }: RecipeTableProps) => {
                 <td className="py-2 px-4">{recipe.title}</td>
                 <td className="py-2 px-4">{recipe.description}</td>
                 <td className="py-2 px-4 flex space-x-2">
-                  <button
+                 <Link href={`/user/${recipe?._id}`}>
+                 <button
                     className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
                     // Add update functionality here
                   >
                     Update
-                  </button>
+                  </button></Link>
                   <button
                     className={`bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ${
                       isDeleting ? "opacity-50 cursor-not-allowed" : ""

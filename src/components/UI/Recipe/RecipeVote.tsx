@@ -6,7 +6,7 @@ import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 interface VoteComponentProps {
   initialVote?: 1 | -1 | 0; // Initial vote status: 1 for upvote, -1 for downvote, 0 for no vote
   initialTotalVotes?: number; // Total number of votes (upvotes - downvotes)
-  onVote: (voteValue: 1 | -1) => void; // Function to handle the vote action
+  onVote: (voteValue: 1 | -1 | 0) => void; // Function to handle the vote action
 }
 
 export default function VoteComponent({
@@ -59,7 +59,7 @@ export default function VoteComponent({
       {/* Upvote button */}
       <Tooltip content={vote === 1 ? "Remove Upvote" : "Upvote"}>
         <Button
-          auto
+          
           color={vote === 1 ? "primary" : "default"}
           onClick={handleUpvote}
           className="hover:text-green-500 transition-colors"
@@ -71,8 +71,8 @@ export default function VoteComponent({
       {/* Downvote button */}
       <Tooltip content={vote === -1 ? "Remove Downvote" : "Downvote"}>
         <Button
-          auto
-          color={vote === -1 ? "error" : "default"}
+          
+          color={vote === -1 ? "danger" : "default"}
           onClick={handleDownvote}
           className="hover:text-red-500 transition-colors"
         >

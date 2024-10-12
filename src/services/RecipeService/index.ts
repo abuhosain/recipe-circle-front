@@ -2,6 +2,7 @@
 import envConfig from "@/src/config/env.confg";
 import axiosInstance from "@/src/lib/AxiosInstance";
 import { revalidateTag } from "next/cache";
+import { FieldValues } from "react-hook-form";
 
 export const CreateRecipe = async (recipeData: FormData): Promise<any> => {
   try {
@@ -16,6 +17,7 @@ export const CreateRecipe = async (recipeData: FormData): Promise<any> => {
     throw new Error(error.message);
   }
 };
+ 
 
 export const DeleteRecipe = async (id: string) => {
   const { data } = await axiosInstance.delete(`/recipe/${id}`);
@@ -31,6 +33,20 @@ export const getAllRecipes = async () => {
   return data;
 };
 
+export const UpdateRecipe = async (
+  recipeId: string,
+  recipeData: FieldValues
+) => {
+  try {
+    const { data } = await axiosInstance.put(
+      `/recipes/${recipeId}`,
+      recipeData
+    );
+    return data;
+  } catch (error) {
+    throw new Error("An unknown error occurred."); // Fallback error
+  }
+};
 
 export const getSingleRecipesById = async (id: string) => {
   let fetchOptions = {};

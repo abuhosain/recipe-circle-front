@@ -1,24 +1,19 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { ReactNode } from "react";
 import {
   FaHome,
-  FaStar,
-  FaPlusCircle,
   FaUserEdit,
   FaBook,
   FaBars,
-  FaCog,
+
 } from "react-icons/fa"; // Importing from Font Awesome
 
 const UserDashboardLayout = ({
   children,
-  isAdmin,
 }: {
   children: ReactNode;
-  isAdmin: boolean;
 }) => {
   return (
     <div className="flex h-screen">

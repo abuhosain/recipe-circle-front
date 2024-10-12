@@ -19,11 +19,13 @@ export default function FXInput({
     register,
     formState: { errors },
   } = useFormContext();
+  const errorMessage = errors ? (errors[name]?.message as string) : ''; // Get the error message for the specific field
+  const isInvalid = !!errorMessage; // Check if there's an error
   return (
     <Input
       {...register(name)}
-      errorMessage={errors[name] ? (errors[name].message as string) : ""}
-      isInvalid={!!errors[name]}
+      errorMessage={errorMessage}
+      isInvalid={isInvalid}
       variant={variant}
       type={type}
       label={label}

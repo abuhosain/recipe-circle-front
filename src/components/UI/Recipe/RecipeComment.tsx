@@ -8,17 +8,16 @@ import { toast } from 'react-toastify';
 
 interface Comment {
   _id: string;
-  user: { email: string; name: string };
+  user:string;
   content: string;
 }
 
 interface CommentSectionProps {
   recipe: IRecipe; 
-  currentUser: IUser;
+  currentUser: any;
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) => {
-    console.log(recipe)
   const [newComment, setNewComment] = useState<string>(''); 
   const [comments, setComments] = useState<Comment[]>(recipe.comments || []); 
   const [updatedContentMap, setUpdatedContentMap] = useState<{ [key: string]: string }>({});
@@ -38,7 +37,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) 
       onSuccess: (response) => {
         setComments((prev) => [
           ...prev, 
-          { _id: response?.commentId, user: { email: currentUser?.email, name: currentUser?.name }, content: newComment }
+          { _id: response?.commentId, user: currentUser?._id, content: newComment }
         ]);
         setNewComment('');
       },
@@ -114,11 +113,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) 
       <div className="mt-6">
         {comments.map((comment) => (
           <div key={comment._id} className="mb-4 border-b border-gray-200 pb-2 relative">
-            <p className="font-semibold">{comment?.user?.name}</p>
+            <p className="font-semibold">{comment?.user}</p>
             <p>{comment.content}</p>
 
             {/* Show Edit/Delete options only for the current user's own comments */}
-            {comment?.user?.email === currentUser?.email && (
+            {comment?.user === currentUser?.id && (
               <div className="absolute right-0 top-0">
                 <button
                   onClick={() => toggleOptions(comment._id)} // Toggle options on click

@@ -20,9 +20,9 @@ const MyRecipesPage = () => {
   }) || [];
 
   return (
-    <div>
-      <h3 className="text-2xl font-bold mb-4">My Recipes</h3>
-      <Link href="/user/create-recipe">
+    <div className="lg:ml-4">
+      <h3 className="text-2xl font-bold mb-4 text-center">My Recipes</h3>
+      <Link href="/user/create-recipe" className="flex justify-end">
         <Button color="success" className="mb-4">
           Create Recipe
         </Button>

@@ -14,6 +14,11 @@ export interface ThemeSwitchProps {
   classNames?: SwitchProps["classNames"];
 }
 
+type ComponentProps = {
+  className: string;
+  // Add other props here that your component expects
+};
+
 export const ThemeSwitch: FC<ThemeSwitchProps> = ({
   className,
   classNames,
@@ -38,8 +43,12 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     onChange,
   });
 
+
+
   return (
+    //@ts-ignore
     <Component
+
       {...getBaseProps({
         className: clsx(
           "px-px transition-opacity hover:opacity-80 cursor-pointer",

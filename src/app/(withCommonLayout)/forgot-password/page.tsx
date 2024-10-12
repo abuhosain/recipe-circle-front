@@ -5,7 +5,7 @@ import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import Loading from "@/src/components/UI/Loading";
 import { useForgotPassword } from "@/src/hooks/auth.hook";
 import { useUser } from "@/src/context/user.provider";
@@ -14,15 +14,15 @@ import FXForm from "@/src/components/form/FXForm";
 import FXInput from "@/src/components/form/FXInput";
 
 const ForgotPassword = () => {
+  const { setIsLoading: userLoading } = useUser();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const redirect = searchParams.get("redirect");
+  const redirect = searchParams?.get("redirect"); // Make sure it's used only on the client-side
   const {
-    mutate: handleforgotPassword,
+    mutate: handleForgotPassword,
     isPending,
     isSuccess,
   } = useForgotPassword();
-  const { setIsLoading: userLoading } = useUser();
 
   useEffect(() => {
     if (!isPending && isSuccess) {
@@ -32,18 +32,18 @@ const ForgotPassword = () => {
         router.push("/");
       }
     }
-  }, [isPending, isSuccess]);
+  }, [isPending, isSuccess, redirect, router]);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    handleforgotPassword(data);
+    handleForgotPassword(data);
     userLoading(true);
   };
 
   return (
     <>
-      {isPending && <Loading></Loading>}
+      {isPending && <Loading />}
       <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center">
-        <h3 className="my-4 text-3xl font-bold ">Forgot Password</h3>
+        <h3 className="my-4 text-3xl font-bold">Forgot Password</h3>
         <p className="mb-6 text-lg">Enter your email to reset your password</p>
 
         <div className="w-full max-w-md">
@@ -64,7 +64,7 @@ const ForgotPassword = () => {
             </Button>
           </FXForm>
 
-          <div className="text-center mt-4 ">
+          <div className="text-center mt-4">
             Remember your password?{" "}
             <Link href="/login" className="text-blue-500 hover:underline">
               Login
@@ -76,4 +76,10 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default function ForgotPasswordPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ForgotPassword />
+    </Suspense>
+  );
+}

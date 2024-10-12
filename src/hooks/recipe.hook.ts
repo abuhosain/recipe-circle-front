@@ -1,13 +1,19 @@
  
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { addComment, addRating, CreateRecipe, createVote, deleteComment,   DeleteRecipe,   getAllRecipes,   updateComment } from "../services/RecipeService";
+import { addComment, addRating, CreateRecipe, createVote, deleteComment,   DeleteRecipe,   getAllRecipes,   getSingleRecipesById,   updateComment, UpdateRecipe } from "../services/RecipeService";
 import { getRecipesByUserId } from "../services/UserServices";
 
 interface CreateRecipeResponse {
     message: string;
     success: boolean;
 }
+
+interface Mutation {
+  recipeId: string;
+  recipeData: FormData;
+}
+
 
 export const useCreateRecipe = () => {
     return useMutation<CreateRecipeResponse, Error, FormData>({
@@ -44,6 +50,8 @@ export const useGetRecipesByUserId = (userId: string) => {
   });
 };
 
+
+
 export const useGetAllRecipe = () => {
     return useQuery<any, Error, any, string[]>({
         queryKey: ["GET_RECIPE"],
@@ -51,7 +59,31 @@ export const useGetAllRecipe = () => {
 
     })
 }
+
+export const useGetSingleRecipe = (recipeId: string) => {
+
+  return useQuery<any, Error, any, string[]>({
+      queryKey: ["GET_SINGLE_RECIPE"],
+      queryFn: async () => await getSingleRecipesById(recipeId),
+
+  })
+}
+
+
  
+export const useUpdateRecipe = () => {
+  return useMutation<CreateRecipeResponse, Error, Mutation>({
+      mutationKey: ["UPDATE_RECIPE"],
+      mutationFn: async ({ recipeId, recipeData }) => await UpdateRecipe(recipeId, recipeData),
+      onSuccess: () => {
+          toast.success("Recipe updated done");
+
+      },
+      onError: (error) => {
+          toast.error("Recipe updated done");
+      },
+  });
+};
 
 
 export const useVote = () => {

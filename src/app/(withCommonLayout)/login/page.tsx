@@ -4,21 +4,19 @@ import FXInput from "@/src/components/form/FXInput";
 import Loading from "@/src/components/UI/Loading";
 import { useUser } from "@/src/context/user.provider";
 import { useUserLogin } from "@/src/hooks/auth.hook";
-// import { useUser } from "@/src/context/user.provider";
-
 import loginValidationSchema from "@/src/schemas/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 
 function Login() {
+  const { setIsLoading: userLoading } = useUser();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { setIsLoading: userLoading } = useUser();
-  const redirect = searchParams.get("redirect");
+  const redirect = searchParams?.get("redirect"); // Ensure safe access to searchParams
   const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -34,7 +32,7 @@ function Login() {
         router.push("/");
       }
     }
-  }, [isPending, isSuccess]);
+  }, [isPending, isSuccess, redirect, router]);
 
   return (
     <>
@@ -71,7 +69,10 @@ function Login() {
             </Link>
           </div>
           <div className="text-center">
-            Don&lsquo;t have account ? <Link href={"/register"}>Register</Link>
+            Don&lsquo;t have an account?{" "}
+            <Link href="/register" className="text-blue-500 hover:underline">
+              Register
+            </Link>
           </div>
         </div>
       </div>
@@ -79,4 +80,10 @@ function Login() {
   );
 }
 
-export default Login;
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Login />
+    </Suspense>
+  );
+}

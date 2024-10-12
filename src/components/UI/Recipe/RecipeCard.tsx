@@ -6,6 +6,7 @@ import "@smastrom/react-rating/style.css";
 import Link from "next/link";
 
 export default function RecipeCard({ recipe }: { recipe: IRecipe }) {
+  const recipeImage = recipe.images[1]
   return (
     <Card
       className="py-6 relative max-w-xl mx-auto shadow-lg rounded-xl transition-transform transform hover:scale-105 hover:shadow-2xl "
@@ -15,7 +16,7 @@ export default function RecipeCard({ recipe }: { recipe: IRecipe }) {
         <Image
           alt="Card background"
           className="object-cover w-full rounded-t-xl"
-          src="https://nextui.org/images/hero-card-complete.jpeg"
+          src={recipeImage}
           width={500} // Increased width
           height={250} // Increased height
         />
