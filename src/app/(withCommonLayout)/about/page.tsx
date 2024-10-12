@@ -15,7 +15,7 @@ export default function AboutUs() {
           <CardBody>
             <div className="flex flex-col md:flex-row">
               <img
-                src="https://www.shutterstock.com/image-photo/word-our-mission-written-on-260nw-1993327142.jpg" // Replace with your mission image URL
+                src="https://t4.ftcdn.net/jpg/00/96/54/53/360_F_96545306_cX6N4Fv2TTVRMKahA3aoCvxlUOGm2KkV.jpg" // Replace with your mission image URL
                 alt="Our Mission"
                 className="w-full md:w-1/2 rounded-lg shadow-md object-cover h-64 md:h-48"
               />
