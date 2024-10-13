@@ -15,6 +15,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Input, Spinner } from "@nextui-org/react";
 import { SearchIcon } from "lucide-react";
 import RecipeCard from "../Recipe/RecipeCard";
+import Link from "next/link";
 
 interface RecipeProps {
   recipes: IRecipe[];
@@ -113,7 +114,8 @@ export default function RecipeHome({ recipes }: RecipeProps) {
         <h2 className="text-4xl font-bold text-center mb-4 text-dark dark:text-light">
           Discover Delicious Recipes
         </h2>
-
+        <p className="text-center text-xl  px-3 py-2 rounded-md">Premium recipe is only for premium user</p>
+      
         {/* header */}
         <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
           {/* Search Bar */}
@@ -133,6 +135,8 @@ export default function RecipeHome({ recipes }: RecipeProps) {
               type="text"
             />
           </form>
+          <Link href={"/membership"} className="flex justify-center"><Button  className="text-center bg-amber-400">Get Premium Membership</Button></Link>
+
 
           <div className="flex items-center w-full sm:w-auto mt-4 sm:mt-0">
             <Button
