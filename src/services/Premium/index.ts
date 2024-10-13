@@ -11,6 +11,10 @@ export const PurcaseSubscriptions = async (purchaseData: FieldValues) => {
 
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };

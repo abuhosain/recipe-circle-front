@@ -24,7 +24,11 @@ export const getLoggedUser = async () => {
     const { data } = await axiosInstance.get("/user");
     return data;
   } catch (error: any) {
-    throw new Error(error.message);
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 export const GetMeAnUpdate = async (meUpdateData: FormData) => {
@@ -37,7 +41,11 @@ export const GetMeAnUpdate = async (meUpdateData: FormData) => {
 
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
@@ -63,9 +71,12 @@ export const addfollowUser = async (userId: string): Promise<any> => {
   try {
     const { data } = await axiosInstance.post(`/user/follow/${userId}`);
     return data;
-  } catch (error) {
-    console.error("Follow submission error:", error); // Improved logging for easier debugging
-    throw new Error("Failed to submit Follow"); // This can be further enhanced to include error details
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
@@ -73,8 +84,11 @@ export const addUnfollowUser = async (userId: string): Promise<any> => {
   try {
     const { data } = await axiosInstance.post(`/user/unfollow/${userId}`);
     return { data };
-  } catch (error) {
-    console.error("UnFollow submission error:", error); // Improved logging for easier debugging
-    throw new Error("Failed to submit UnFollow"); // This can be further enhanced to include error details
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };

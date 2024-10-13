@@ -14,7 +14,11 @@ export const CreateRecipe = async (recipeData: FormData): Promise<any> => {
     revalidateTag("recipes");
     return data;
   } catch (error: any) {
-    throw new Error(error.message);
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
  
@@ -43,8 +47,12 @@ export const UpdateRecipe = async (
       recipeData
     );
     return data;
-  } catch (error) {
-    throw new Error("An unknown error occurred."); // Fallback error
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data // Fallback error
   }
 };
 
@@ -73,9 +81,12 @@ export const createVote = async (
       }
     );
     return data;
-  } catch (error) {
-    console.error("Vote submission error:", error); // Improved logging for easier debugging
-    throw new Error("Failed to submit vote"); // This can be further enhanced to include error details
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
@@ -88,9 +99,12 @@ export const addRating = async (
       rating: rating,
     });
     return data;
-  } catch (error) {
-    console.error("Rating submission error:", error); // Improved logging for easier debugging
-    throw new Error("Failed to submit Rating"); // This can be further enhanced to include error details
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
@@ -105,9 +119,12 @@ export const addComment = async (
         content: comment,
       }
     );
-  } catch (error) {
-    console.error("Comment submission error:", error); // Improved logging for easier debugging
-    throw new Error("Failed to submit Comment"); // This can be further enhanced to include error details
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
@@ -121,9 +138,12 @@ export const deleteComment = async (
       `/social/recipes/${recipeId}/comment/${commentId}`
     );
     return data; // Return the data if needed
-  } catch (error) {
-    console.error("Comment deletion error:", error);
-    throw new Error("Failed to delete Comment");
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
@@ -141,8 +161,11 @@ export const updateComment = async (
       }
     );
     return data; // Return the data if needed
-  } catch (error) {
-    console.error("Comment update error:", error);
-    throw new Error("Failed to update Comment");
+  } catch (error : any) {
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };

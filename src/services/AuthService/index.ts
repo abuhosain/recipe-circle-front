@@ -10,7 +10,11 @@ export const registerUser = async (userData: FieldValues) => {
     const { data } = await axiosInstance.post("/auth/signup", userData);
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
@@ -23,7 +27,11 @@ export const loginUser = async (userData: FieldValues) => {
     }
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    const data = {
+      success : false,
+      message : error?.response?.data?.message
+    }
+    return data
   }
 };
 
