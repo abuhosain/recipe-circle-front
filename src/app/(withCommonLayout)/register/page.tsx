@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -21,6 +21,7 @@ export default function RegisterPage() {
     mutate: handleUserRegistration,
     isPending,
     isSuccess,
+    data
   } = useUserRegistration();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -40,9 +41,18 @@ export default function RegisterPage() {
     setImageFiles(files);
   };
 
-  if (!isPending && isSuccess) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (data && !data?.success) {
+        toast.error(data?.message as string);
+    }
+    if (data && data?.success) {
+        toast.success("User created succesfully");
+        router.push("/");
+    }
+
+}, [data])
+
+  
 
   return (
     <>

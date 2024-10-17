@@ -120,14 +120,14 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
           max-width: 500px;
           margin: 0 auto;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          background-color: #fff;
+          
         }
 
         .recipe-title {
           text-align: center;
           font-size: 24px;
           margin-bottom: 20px;
-          color: #333;
+          
         }
 
         .average-rating-section {
@@ -140,12 +140,12 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
 
         .average-rating-text {
           font-size: 18px;
-          color: #555;
+          
         }
 
         .total-votes-text {
           font-size: 16px;
-          color: #555;
+          
         }
 
         .submit-rating-section {

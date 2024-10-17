@@ -1,10 +1,9 @@
-"use client";
-
 import { usePublishRecipe, useUnPublishRecipe } from "@/src/hooks/admin.hook";
 import { useDeleteRecipe } from "@/src/hooks/recipe.hook";
 import React from "react";
 import { toast } from "sonner";
 
+// AdminRecipeDetails Component
 interface Recipe {
   _id: string;
   title: string;
@@ -21,7 +20,10 @@ interface AdminRecipeDetailsProps {
 const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
   const { title, description, images, isPublished, isPremium } = recipe;
   const firstImage = images[0];
-  
+
+  // Local state to manage the published state of the recipe
+  const [isPublishedState, setIsPublishedState] = React.useState(isPublished);
+
   // Hooks for delete, publish, and unpublish operations
   const { mutate: deleteRecipe, isPending: isDeleting } = useDeleteRecipe();
   const { mutate: publishRecipe, isPending: isPublishing } = usePublishRecipe();
@@ -33,6 +35,7 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
       try {
         await deleteRecipe(id); // Call the delete function from the hook
         toast.success("Recipe deleted successfully!"); // Show success message
+        window.location.reload();
       } catch (error) {
         toast.error("Failed to delete the recipe."); // Handle error case
       }
@@ -43,6 +46,7 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
   const handlePublish = async (id: string) => {
     try {
       await publishRecipe(id); // Call the publish function from the hook
+      setIsPublishedState(true); // Update local state
       toast.success("Recipe published successfully!"); // Show success message
     } catch (error) {
       toast.error("Failed to publish the recipe."); // Handle error case
@@ -53,6 +57,7 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
   const handleUnPublish = async (id: string) => {
     try {
       await unPublishRecipe(id); // Call the unpublish function from the hook
+      setIsPublishedState(false); // Update local state
       toast.success("Recipe unpublished successfully!"); // Show success message
     } catch (error) {
       toast.error("Failed to unpublish the recipe."); // Handle error case
@@ -84,12 +89,12 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
       <div className="flex justify-between mt-6">
         <button
           className={`py-2 px-4 rounded-md text-white font-semibold ${
-            isPublished
+            isPublishedState
               ? "bg-red-600 hover:bg-red-700"
               : "bg-green-600 hover:bg-green-700"
           } transition duration-300`}
           onClick={() => {
-            if (isPublished) {
+            if (isPublishedState) {
               handleUnPublish(recipe._id); // Call unpublish if currently published
             } else {
               handlePublish(recipe._id); // Call publish if currently unpublished
@@ -99,7 +104,7 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
         >
           {isPublishing || isUnPublishing
             ? "Processing..."
-            : isPublished
+            : isPublishedState
             ? "Unpublish"
             : "Publish"}
         </button>
@@ -107,7 +112,10 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
           className={`bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ${
             isDeleting ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          onClick={() => handleDelete(recipe._id)}
+          onClick={() => {
+            handleDelete(recipe._id);
+            // Optionally, you can also remove the recipe from the UI here
+          }}
           disabled={isDeleting} // Disable button while deleting
         >
           {isDeleting ? "Deleting..." : "Delete"}

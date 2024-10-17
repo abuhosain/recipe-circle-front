@@ -17,9 +17,11 @@ interface User {
 interface UserTableProps {
   user: User; // Single user object
   isLoading: boolean;
+  onDelete: (id: string) => void; // Callback for deleting a user
+  onUpdate: (updatedUser: User) => void; // Callback for updating user status
 }
 
-const UserTable = ({ user, isLoading }: UserTableProps) => {
+const UserTable = ({ user, isLoading, onDelete, onUpdate }: UserTableProps) => {
   const { mutate: deleteUser, isPending: isDeleting } = useDeleteUser();
   const { mutate: blockUser, isPending: isBlocking } = useBlockUser();
   const { mutate: unblockUser, isPending: isUnblocking } = useUnBlockUser();
@@ -32,6 +34,7 @@ const UserTable = ({ user, isLoading }: UserTableProps) => {
       try {
         await deleteUser(id); // Call the delete function from the hook
         toast.success("User deleted successfully!"); // Show success message
+        onDelete(id); // Call the parent callback to remove the user from the UI
       } catch (error) {
         console.error(error); // Log the error
         toast.error("Failed to delete the user."); // Handle error case
@@ -50,6 +53,10 @@ const UserTable = ({ user, isLoading }: UserTableProps) => {
           await blockUser(id); // Call the block function from the hook
         }
         toast.success(`User ${action}ed successfully!`); // Show success message
+
+        // Update user state optimistically
+        const updatedUser = { ...user, isBlocked: !isBlocked };
+        onUpdate(updatedUser); // Call the parent callback to update the user status in the UI
       } catch (error) {
         console.error(error); // Log the error
         toast.error(`Failed to ${action} the user.`); // Handle error case

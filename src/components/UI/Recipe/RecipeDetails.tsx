@@ -36,7 +36,7 @@ export default function RecipeDetails({ recipe, user }: IProps) {
   }, [data]);
 
   return (
-    <div className="grid md:grid-cols-2 gap-6 p-6 bg-white rounded-lg shadow-md mb-12">
+    <div className="grid md:grid-cols-2 gap-6 p-6   rounded-lg shadow-md mb-12">
       {/* Recipe details section */}
       <div>
         <div className="pr-12">
@@ -45,7 +45,7 @@ export default function RecipeDetails({ recipe, user }: IProps) {
         <h3 className="text-3xl mt-3 font-semibold">{recipe?.title}</h3>
 
         {/* Description */}
-        <p className="text-md mt-3 text-slate-600">{recipe?.description}</p>
+        <p className="text-md mt-3 ">{recipe?.description}</p>
 
         {/* Tags */}
         <div className="flex gap-3 mt-3 mb-2">
@@ -84,7 +84,7 @@ export default function RecipeDetails({ recipe, user }: IProps) {
 
       {/* Author section */}
       <div>
-        <div className="border rounded-md w-full bg-slate-100 relative   mt-12 p-4">
+        <div className="border rounded-md w-full  relative   mt-12 p-4">
           <div className="text-center">
             <h3 className="font-bold text-2xl">
               Hi, I'm {recipe?.author?.name}

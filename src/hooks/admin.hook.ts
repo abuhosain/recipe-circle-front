@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {  BlockUser, DeleteUser, getAllRecipesByAdmin, getAllUser, publishRecipe, unPublishRecipe } from "../services/AdminService";
+import {  BlockUser, DeleteUser, getAllRecipesByAdmin, getAllUser, publishRecipe, UnBlockUser, unPublishRecipe } from "../services/AdminService";
 import { toast } from "sonner";
 interface CreateRecipeResponse {
     message: string;
@@ -54,7 +54,7 @@ export const useBlockUser = () => {
 export const useUnBlockUser = () => {
     return useMutation<CreateRecipeResponse, Error, string>({
         mutationKey: ["UNBLOCK_User"],
-        mutationFn: async (id) => await DeleteUser(id),
+        mutationFn: async (id) => await UnBlockUser(id),
         onSuccess: () => {
             toast.success(" User Unblcok successfully");
         },
