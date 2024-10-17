@@ -116,18 +116,6 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
         {/* Main Content Section */}
         <main className="flex-1 p-4 lg:p-8">{children}</main>
       </div>
-
-      {/* Sidebar Toggle Button Always Visible on Small Devices */}
-      {!sidebarOpen && (
-        <div className="fixed bottom-0 left-0 lg:hidden">
-          <button
-            onClick={toggleSidebar}
-            className="bg-white p-4 shadow-md rounded-full mb-4"
-          >
-            <FaBars className="h-8 w-8 text-gray-700" />
-          </button>
-        </div>
-      )}
     </div>
   );
 };

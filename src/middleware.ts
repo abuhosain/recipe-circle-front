@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { getCurrentUser } from "./services/AuthService";
 
-
+// Define authentication and protected routes
 const AuthRoutes = ["/login", "/register"];
+const protectedRoutes = ['/profile', '/profile/:page*', '/recipes', '/recipes/:page*'];
 
 type Role = keyof typeof roleBasedRoutes;
 
@@ -16,30 +17,44 @@ const roleBasedRoutes = {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Check if user is authenticated
   const user = await getCurrentUser();
 
+  // If user is not authenticated
   if (!user) {
+    // Allow access to authentication routes
     if (AuthRoutes.includes(pathname)) {
       return NextResponse.next();
-    } else {
+    } else if (protectedRoutes.some(route => pathname.match(route))) {
+      // Redirect to login if trying to access a protected route
       return NextResponse.redirect(
-        new URL(`/login?redirect=${pathname}`, request.url),
+        new URL(`/login?redirect=${pathname}`, request.url)
       );
     }
-  }
-
-  if (user?.role && roleBasedRoutes[user?.role as Role]) {
-    const routes = roleBasedRoutes[user?.role as Role];
-
-    if (routes.some((route) => pathname.match(route))) {
+  } else {
+    // If user is authenticated, allow access to protected routes directly
+    if (protectedRoutes.some(route => pathname.match(route))) {
       return NextResponse.next();
     }
+
+    // If user role is defined, check for role-based access
+    if (user?.role && roleBasedRoutes[user?.role as Role]) {
+      const routes = roleBasedRoutes[user?.role as Role];
+
+      // Allow access to routes based on user role
+      if (routes.some((route) => pathname.match(route))) {
+        return NextResponse.next();
+      }
+    }
+    // Redirect to home if user role does not match any routes
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return NextResponse.redirect(new URL("/", request.url));
+  // Allow access to any other routes
+  return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
+// Configuration for matching paths
 export const config = {
-    matcher: ['/login', '/register', '/user/:page*', '/admin/:page*'],
-}
+  matcher: ['/login', '/register', '/user/:page*', '/admin/:page*', '/profile', '/profile/:page*', '/recipes', '/recipes/:page*'],
+};
