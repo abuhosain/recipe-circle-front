@@ -125,7 +125,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) 
                   ••• {/* Three dots */}
                 </button>
                 {visibleOptions === comment._id && (
-                  <div className="absolute bg-white shadow-lg border rounded-md mt-1 z-10 p-4 -top-32 w-72">
+                  <div className="absolute bg-white shadow-lg border rounded-md mt-1 z-10 p-4 -top-32 md:right-48 right-16 w-72">
                     <textarea
                       value={updatedContentMap[comment._id] || ''}
                       onChange={(e) => setUpdatedContentMap((prev) => ({ ...prev, [comment._id]: e.target.value })) }

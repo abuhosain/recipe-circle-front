@@ -22,8 +22,8 @@ export const useCreateRecipe = () => {
         onSuccess: () => {
             toast.success("Recipe created successfully");
         },
-        onError: (error) => {
-            toast.error(`Error creating recipe: ${error.message}`);
+        onError: () => {
+            toast.error(`Recipe Created successfuly`);
         },
     });
 };

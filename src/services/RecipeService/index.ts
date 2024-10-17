@@ -13,7 +13,9 @@ export const CreateRecipe = async (recipeData: FormData): Promise<any> => {
     });
     revalidateTag("recipes");
     return data;
+
   } catch (error: any) {
+    console.log(error)
     const data = {
       success : false,
       message : error?.response?.data?.message

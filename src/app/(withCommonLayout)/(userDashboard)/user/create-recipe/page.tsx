@@ -131,6 +131,15 @@ const RecipeForm = () => {
                   required
                 />
               </div>
+              {/* instructions */}
+              <div className="mb-6">
+                <RcInput
+                  name="instructions"
+                  label="Recipe Instructions"
+                  type="textarea"
+                  required
+                />
+              </div>
 
               {/* Cooking Time */}
               <div className="mb-6">
@@ -257,17 +266,18 @@ const RecipeForm = () => {
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                isDisabled={createRecipePending}
-                className="w-full bg-green-500 text-white hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 rounded-lg"
-              >
-                {createRecipePending ? "Creating..." : "Create Recipe"}
-              </Button>
+              {/* Submit Button */}
+              <div className="flex justify-center">
+                <Button
+                  className="w-full py-3 bg-green-500 hover:bg-green-600 text-white text-lg rounded-lg shadow-md dark:bg-green-600 dark:hover:bg-green-700"
+                  type="submit"
+                  isDisabled={createRecipePending}
+                >
+                  {createRecipePending ? "Submitting..." : "Create Recipe"}
+                </Button>
+              </div>
             </form>
           </FormProvider>
-          <p className="mt-2 text-green-400">if you see Error creating recipe : An error in the server</p>
-          <p className="text-green-400">Just ignor it our developer work with it, Your recipe will create, Dont worry</p>
         </div>
       </div>
     </>

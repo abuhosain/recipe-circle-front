@@ -102,7 +102,7 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
   };
 
   if (!createRecipePending && isSuccess) {
-    router.push("/user/profile/my-recipes");
+    router.push("/user/my-recipes");
   }
 
   return (
@@ -220,17 +220,6 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
                 </label>
               </div>
 
-              {/* Is Published */}
-              <div className="mb-6 flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-indigo-600 dark:text-indigo-400"
-                  name="isPublished"
-                />
-                <label className="ml-2 text-gray-700 dark:text-gray-300 font-medium">
-                  Publish Recipe
-                </label>
-              </div>
 
               {/* Submit Button */}
               <Button
