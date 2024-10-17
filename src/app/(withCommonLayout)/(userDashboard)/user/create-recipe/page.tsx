@@ -266,6 +266,8 @@ const RecipeForm = () => {
               </Button>
             </form>
           </FormProvider>
+          <p className="mt-2 text-green-400">if you see Error creating recipe : An error in the server</p>
+          <p className="text-green-400">Just ignor it our developer work with it, Your recipe will create, Dont worry</p>
         </div>
       </div>
     </>

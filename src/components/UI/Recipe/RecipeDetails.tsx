@@ -1,14 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IRecipe, IUser } from "@/src/types";
 import ImageGallery from "./ImageGallery";
 import "@smastrom/react-rating/style.css";
- 
+
 import { Link } from "@nextui-org/react";
 import { useVote } from "@/src/hooks/recipe.hook";
 import VoteComponent from "./RecipeVote";
 import RecipeRating from "./RecipeRating";
 import CommentSection from "./RecipeComment";
+import { toast } from "sonner";
 
 interface IProps {
   recipe: IRecipe;
@@ -19,22 +20,19 @@ export default function RecipeDetails({ recipe, user }: IProps) {
   const [totalVotes, setTotalVotes] = useState(recipe?.voteScore || 0);
 
   // Use the custom mutation hook for voting
-  const { mutate: voteRecipe } = useVote();
+  const { mutate: voteRecipe, data } = useVote();
 
   const handleVote = (voteValue: 1 | -1 | 0) => {
-    voteRecipe(
-      { recipeId: recipe?._id, voteValue },
-      {
-        onSuccess: () => {
-          // Update the local vote count after successful mutation
-          setTotalVotes((prevVotes) => prevVotes + voteValue);
-        },
-        onError: (error) => {
-          console.error("Error submitting vote:", error);
-        },
-      }
-    );
+    voteRecipe({ recipeId: recipe?._id, voteValue });
   };
+
+  useEffect(() => {
+    if (data && !data.success) {
+      toast.error(data?.message);
+    }else if(data && data?.success){
+      toast.success("Vote submited done");
+    }
+  }, [data]);
 
   return (
     <div className="grid md:grid-cols-2 gap-6 p-6 bg-white rounded-lg shadow-md mb-12">
@@ -54,7 +52,10 @@ export default function RecipeDetails({ recipe, user }: IProps) {
           <div className="flex gap-2 items-center">
             {recipe.tags.length > 0 ? (
               recipe.tags.map((item, index) => (
-                <span key={index} className="bg-blue-200 text-blue-800 text-sm py-1 px-2 rounded-md">
+                <span
+                  key={index}
+                  className="bg-blue-200 text-blue-800 text-sm py-1 px-2 rounded-md"
+                >
                   {item}
                 </span>
               ))
@@ -72,11 +73,11 @@ export default function RecipeDetails({ recipe, user }: IProps) {
 
         {/* Vote */}
         <div className="mt-3">
-        <VoteComponent
-          initialVote={0}
-          onVote={handleVote}
-          initialTotalVotes={totalVotes}
-        />
+          <VoteComponent
+            initialVote={0}
+            onVote={handleVote}
+            initialTotalVotes={totalVotes}
+          />
         </div>
       </div>
 
@@ -84,7 +85,9 @@ export default function RecipeDetails({ recipe, user }: IProps) {
       <div>
         <div className="border rounded-md w-full bg-slate-100 relative   mt-12 p-4">
           <div className="text-center">
-            <h3 className="font-bold text-2xl">Hi, I'm {recipe?.author?.name}</h3>
+            <h3 className="font-bold text-2xl">
+              Hi, I'm {recipe?.author?.name}
+            </h3>
             <h2 className="text-md">
               A culinary enthusiast with a love for creating delicious and
               easy-to-follow recipes. Passionate about blending flavors and
@@ -103,7 +106,11 @@ export default function RecipeDetails({ recipe, user }: IProps) {
         </div>
 
         <div>
-          <CommentSection key={recipe?._id} recipe={recipe} currentUser={user} />
+          <CommentSection
+            key={recipe?._id}
+            recipe={recipe}
+            currentUser={user}
+          />
         </div>
       </div>
     </div>

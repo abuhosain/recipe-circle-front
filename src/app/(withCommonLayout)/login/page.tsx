@@ -11,13 +11,19 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
 function Login() {
   const { setIsLoading: userLoading } = useUser();
   const searchParams = useSearchParams();
   const router = useRouter();
   const redirect = searchParams?.get("redirect"); // Ensure safe access to searchParams
-  const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
+  const {
+    mutate: handleUserLogin,
+    isPending,
+    isSuccess,
+    data,
+  } = useUserLogin();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     handleUserLogin(data);
@@ -25,14 +31,17 @@ function Login() {
   };
 
   useEffect(() => {
-    if (!isPending && isSuccess) {
+    if (data && !data.success) {
+      toast.error(data?.message);
+    } else if (!isPending && isSuccess) {
+      toast.success("User Logged successfully");
       if (redirect) {
         router.push(redirect);
       } else {
         router.push("/");
       }
     }
-  }, [isPending, isSuccess, redirect, router]);
+  }, [isPending, isSuccess, redirect, router, data]);
 
   return (
     <>

@@ -90,12 +90,12 @@ export const useVote = () => {
   return useMutation<any, Error, { recipeId: string; voteValue: number }>({
     mutationKey: ["VOTE_RECIPE"],
     mutationFn: async ({ recipeId, voteValue }) => await createVote(recipeId, voteValue),
-    onSuccess: () => {
-      toast.success("Vote submitted successfully");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to submit vote");
-    },
+    // onSuccess: () => {
+    //   toast.success("Vote submitted successfully");
+    // },
+    // onError: (error) => {
+    //   toast.error(error.message || "Failed to submit vote");
+    // },
   });
 };
 

@@ -11,7 +11,7 @@ import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function RegisterPage() {
@@ -23,7 +23,7 @@ export default function RegisterPage() {
     isSuccess,
   } = useUserRegistration();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FormData> = (data) => {
     const formData = new FormData();
     if (imageFiles !== null) {
       formData.append("file", imageFiles);

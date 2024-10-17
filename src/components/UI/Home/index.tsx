@@ -1,7 +1,6 @@
 "use client";
 
 import envConfig from "@/src/config/env.confg";
-import { useUser } from "@/src/context/user.provider";
 import useDebounce from "@/src/hooks/debounce.hook";
 import { IRecipe } from "@/src/types";
 import axios from "axios";
@@ -16,6 +15,7 @@ import { Input, Spinner } from "@nextui-org/react";
 import { SearchIcon } from "lucide-react";
 import RecipeCard from "../Recipe/RecipeCard";
 import Link from "next/link";
+import { useGetAuthUser } from "@/src/hooks/user.hook";
 
 interface RecipeProps {
   recipes: IRecipe[];
@@ -35,15 +35,16 @@ const axiosClient = axios.create({
 });
 
 export default function RecipeHome({ recipes }: RecipeProps) {
-  const { user } = useUser();
+  const { data: user } = useGetAuthUser();
   const { register, watch } = useForm();
   const searchTerm = useDebounce(watch("search"), 500);
   const [items, setItems] = useState<IRecipe[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [selectedSort, setSelectedSort] = useState<string>("-voteScore");
-  // const [selectedFeed, setSelectedFeed] = useState<string>("");
+  const [selectedSort, setSelectedSort] = useState<string>("");
+console.log(selectedSort, "selected")
+  console.log(user, "user");
   const router = useRouter();
 
   const fetchData = async () => {
@@ -58,22 +59,21 @@ export default function RecipeHome({ recipes }: RecipeProps) {
       if (token) {
         axiosClient.defaults.headers["Authorization"] = token;
       }
-      
-      let response
-     if(searchTerm){
-       response = await axiosClient.get(`/recipe?searchTerm=${searchTerm}`);
-     }else if (selectedSort){
+
+      let response;
+      if (searchTerm) {
+        response = await axiosClient.get(`/recipe?searchTerm=${searchTerm}`);
+      } else if (selectedSort == "-createdAt") {
         response = await axiosClient.get(`/recipe?sort=${selectedSort}`);
-     }
-     else if (searchTerm && selectedSort){
-      response = await axiosClient.get(`/recipe?searchTerm=${searchTerm}&sort=${selectedSort}`);
-     }
-     
-     else{
-      response = await axiosClient.get(`/recipe`);
-     }
-      
-      const FeedData = response?.data?.data
+      } else if (searchTerm && selectedSort == "-createdAt") {
+        response = await axiosClient.get(
+          `/recipe?searchTerm=${searchTerm}&sort=${selectedSort}`
+        );
+      } else {
+        response = await axiosClient.get(`/recipe`);
+      }
+
+      const FeedData = response?.data?.data;
       console.log(FeedData);
       if (FeedData?.recipes) {
         // Update the items with the fetched data
@@ -104,9 +104,11 @@ export default function RecipeHome({ recipes }: RecipeProps) {
     setHasMore(true); // Reset hasMore flag
     if (searchTerm !== undefined) {
       fetchData();
-      console.log(fetchData, "fetchData") // Fetch data with new search query
     }
-  }, [searchTerm]);
+    else if (selectedSort == "-createdAt") {
+      fetchData();
+    }
+  }, [searchTerm, selectedSort]);
 
   return (
     <Container>
@@ -114,8 +116,17 @@ export default function RecipeHome({ recipes }: RecipeProps) {
         <h2 className="text-4xl font-bold text-center mb-4 text-dark dark:text-light">
           Discover Delicious Recipes
         </h2>
-        <p className="text-center text-xl  px-3 py-2 rounded-md">Premium recipe is only for premium user</p>
-      
+       
+        {!user?.data?.isPremium && (
+            <Link href={"/membership"} className="flex justify-center">
+              
+              <p className="text-center text-xl  px-3 py-2 rounded-md">
+          Premium recipe is only for premium user
+        </p>
+              
+            </Link>
+          )}
+
         {/* header */}
         <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
           {/* Search Bar */}
@@ -135,16 +146,21 @@ export default function RecipeHome({ recipes }: RecipeProps) {
               type="text"
             />
           </form>
-          <Link href={"/membership"} className="flex justify-center"><Button  className="text-center bg-amber-400">Get Premium Membership</Button></Link>
-
+          {!user?.data?.isPremium && (
+            <Link href={"/membership"} className="flex justify-center">
+              <Button className="text-center bg-amber-400">
+                Get Premium Membership
+              </Button>
+            </Link>
+          )}
 
           <div className="flex items-center w-full sm:w-auto mt-4 sm:mt-0">
             <Button
               className="sm:mt-0 sm:ml-4 w-full rounded-md bg-default-900 font-semibold text-default"
               size="md"
-              onClick={() => setSelectedSort("-voteScore")}
+              onClick={() => setSelectedSort("-createdAt")}
             >
-              Popular Recipe
+              Recent Recipe
             </Button>
           </div>
         </div>
@@ -155,15 +171,13 @@ export default function RecipeHome({ recipes }: RecipeProps) {
       <main className="w-full">
         <div className="flex justify-center">
           <div className=" ">
-            <div className="" >
+            <div className="">
               <InfiniteScroll
                 dataLength={items?.length}
                 next={fetchData}
-                style={{overflow : "inherit", width : "100%"}}
+                style={{ overflow: "inherit", width: "100%" }}
                 hasMore={hasMore}
-                loader={      
-                    <Spinner />    
-                }
+                loader={<Spinner />}
                 endMessage={
                   <p className="text-2xl text-center font-bold text-gray-700 dark:text-gray-300 mb-2">
                     No more Recipes!
@@ -171,9 +185,12 @@ export default function RecipeHome({ recipes }: RecipeProps) {
                 }
               >
                 <div className="w-full">
-                {items?.map((recipe: IRecipe, index) => (
-                  <RecipeCard key={`${recipe?._id}-${index}`} recipe={recipe} />
-                ))}
+                  {items?.map((recipe: IRecipe, index) => (
+                    <RecipeCard
+                      key={`${recipe?._id}-${index}`}
+                      recipe={recipe}
+                    />
+                  ))}
                 </div>
               </InfiniteScroll>
             </div>

@@ -1,28 +1,22 @@
-"use client";
-
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/dropdown";
-import { usePathname, useRouter } from "next/navigation";
-import { Avatar } from "@nextui-org/avatar";
- 
+import { protectedRoutes } from "@/src/constant";
+import { MdOutlineVerifiedUser, MdVerified } from "react-icons/md";
 import { useUser } from "@/src/context/user.provider";
+import { useGetAuthUser } from "@/src/hooks/user.hook";
 import { logOut } from "@/src/services/AuthService";
-import { protectedRoutes } from "../../../constant";
+import { Avatar, Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"; // Import Badge component
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NavbarDropdown() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, setIsLoading: userLoading } = useUser();
+  const { data: authUser } = useGetAuthUser();
 
   const handleLogout = () => {
     logOut();
     userLoading(true);
 
-    if (protectedRoutes.some((route  : any) => pathname.match(route))) {
+    if (protectedRoutes.some((route: any) => pathname.match(route))) {
       router.push("/");
     }
   };
@@ -34,7 +28,12 @@ export default function NavbarDropdown() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Avatar className="cursor-pointer" src={user?.profilePicture} />
+        <div className="flex items-center cursor-pointer relative">
+        {authUser?.data?.isPremium && (
+            <MdVerified className="text-2xl bg-white rounded-full top-0 absolute text-blue-500 z-20 right-6 " />
+          )}
+          <Avatar src={user?.profilePicture} />    
+        </div>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem onClick={() => handleNavigation(`/${user?.role}`)}>
@@ -43,7 +42,7 @@ export default function NavbarDropdown() {
         <DropdownItem onClick={() => handleNavigation("/profile/settings")}>
           Settings
         </DropdownItem>
- 
+
         <DropdownItem
           key="delete"
           className="text-danger"
