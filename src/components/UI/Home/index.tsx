@@ -43,7 +43,7 @@ export default function RecipeHome({ recipes }: RecipeProps) {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [selectedSort, setSelectedSort] = useState<string>("");
-console.log(selectedSort, "selected")
+  console.log(selectedSort, "selected");
   console.log(user, "user");
   const router = useRouter();
 
@@ -104,8 +104,7 @@ console.log(selectedSort, "selected")
     setHasMore(true); // Reset hasMore flag
     if (searchTerm !== undefined) {
       fetchData();
-    }
-    else if (selectedSort == "-createdAt") {
+    } else if (selectedSort == "-createdAt") {
       fetchData();
     }
   }, [searchTerm, selectedSort]);
@@ -116,16 +115,14 @@ console.log(selectedSort, "selected")
         <h2 className="text-4xl font-bold text-center mb-4 text-dark dark:text-light">
           Discover Delicious Recipes
         </h2>
-       
-        {!user?.data?.isPremium && (
-            <Link href={"/membership"} className="flex justify-center">
-              
-              <p className="text-center text-xl  px-3 py-2 rounded-md">
-          Premium recipe is only for premium user
-        </p>
-              
-            </Link>
-          )}
+
+        {!(user?.data?.isPremium || user?.data?.role === "admin") && (
+          <Link href={"/membership"} className="flex justify-center">
+            <p className="text-center text-xl  px-3 py-2 rounded-md">
+              Premium recipe is only for premium user
+            </p>
+          </Link>
+        )}
 
         {/* header */}
         <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
@@ -146,7 +143,7 @@ console.log(selectedSort, "selected")
               type="text"
             />
           </form>
-          {!user?.data?.isPremium && (
+          {!(user?.data?.isPremium || user?.data?.role === "admin") && (
             <Link href={"/membership"} className="flex justify-center">
               <Button className="text-center bg-amber-400">
                 Get Premium Membership

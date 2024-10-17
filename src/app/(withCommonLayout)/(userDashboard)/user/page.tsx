@@ -18,7 +18,7 @@ console.log(user?.data)
 
   // Render user data
   return (
-    <div>
+    <div className="w-full mx-auto">
       {user ? (
         <div>
            <UserProfileDetails user={user?.data} />

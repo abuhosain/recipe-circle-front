@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import {
@@ -7,27 +8,26 @@ import {
   FaUserEdit,
   FaBook,
   FaBars,
-
+  FaTimes,
 } from "react-icons/fa"; // Importing from Font Awesome
 
-const UserDashboardLayout = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <div className="flex h-screen">
       {/* Side Navigation Bar */}
-      <aside className="md:fixed inset-y-0 z-20 left-0 bg-white shadow-lg lg:w-72">
+      <aside
+        className={`fixed inset-y-0 md:mt-14 z-50 left-0 bg-white shadow-lg w-64 lg:w-72 transform transition-transform duration-300 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
+      >
         <div className="h-full flex flex-col justify-between p-6 lg:p-8">
           <div>
-            {/* Logo or Dashboard Title */}
-            <div className="mb-12 flex items-center">
-              <FaHome className="h-8 w-8 text-blue-500" />
-              <span className="ml-2 text-3xl lg:text-4xl font-bold text-gray-800 hidden lg:block">
-                Dashboard
-              </span>
-            </div>
             {/* Navigation Links */}
             <nav className="space-y-8 lg:space-y-12">
               <Link href="/">
@@ -39,17 +39,15 @@ const UserDashboardLayout = ({
               <Link href="/admin/manage-recipes">
                 <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
                   <FaBook className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className=" hidden ml-3 lg:block ">Manage Recipes</span>
+                  <span className="hidden ml-3 lg:block">Manage Recipes</span>
                 </p>
               </Link>
-
               <Link href="/admin/manage-users">
                 <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
                   <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
                   <span className="ml-3 hidden lg:block">Manage Users</span>
                 </p>
               </Link>
-
               <Link href="/admin/create-admin">
                 <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
                   <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
@@ -59,22 +57,37 @@ const UserDashboardLayout = ({
             </nav>
           </div>
         </div>
+
+        {/* Close Button on Mobile */}
+        <button
+          className="absolute top-4 right-4 lg:hidden text-gray-700 z-50"
+          onClick={toggleSidebar}
+        >
+          <FaTimes className="h-6 w-6" />
+        </button>
       </aside>
 
       {/* Main Content Area */}
-      <div className="w-full ">
+      <div className="w-full lg:ml-72">
+        {/* Header on Mobile */}
+        <header className="lg:hidden flex justify-between items-center bg-white p-4 shadow-md">
+          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+          <button onClick={toggleSidebar}>
+            <FaBars className="h-6 w-6 text-gray-700" />
+          </button>
+        </header>
+
         {/* Main Content Section */}
-        <main>{children}</main>
+        <main className="p-4">{children}</main>
       </div>
 
-      {/* Sidebar Icon Always Visible on Small Devices */}
-      <div className="absolute bottom-0 left-0 lg:hidden">
-        <Link href="/">
-          <div className="bg-white p-4 shadow-md rounded-full mb-4">
-            <FaBars className="h-8 w-8 text-gray-700" />
-          </div>
-        </Link>
-      </div>
+      {/* Sidebar Overlay for Small Devices */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 lg:hidden z-40"
+          onClick={toggleSidebar}
+        ></div>
+      )}
     </div>
   );
 };

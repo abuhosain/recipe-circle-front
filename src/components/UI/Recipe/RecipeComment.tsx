@@ -1,20 +1,19 @@
 "use client";
 
- 
 import { useAddComment, useDeleteComment, useUpdateComment } from '@/src/hooks/recipe.hook';
-import { IRecipe, IUser } from '@/src/types';
+import { IRecipe } from '@/src/types';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface Comment {
   _id: string;
-  user:string;
+  user: string;
   content: string;
 }
 
 interface CommentSectionProps {
-  recipe: IRecipe; 
-  currentUser: any;
+  recipe: IRecipe;
+  currentUser: any; // Assuming currentUser has an _id or id field
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) => {
@@ -36,8 +35,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) 
     addComment({ recipeId: recipe._id, comment: newComment }, {
       onSuccess: (response) => {
         setComments((prev) => [
-          ...prev, 
-          { _id: response?.commentId, user: currentUser?._id, content: newComment }
+          ...prev,
+          { _id: response?.commentId, user: currentUser?._id || currentUser?.id, content: newComment } // Ensure correct user ID
         ]);
         setNewComment('');
       },
@@ -117,7 +116,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ recipe, currentUser }) 
             <p>{comment.content}</p>
 
             {/* Show Edit/Delete options only for the current user's own comments */}
-            {comment?.user === currentUser?.id && (
+            {comment?.user === currentUser?._id || comment?.user === currentUser?.id && (
               <div className="absolute right-0 top-0">
                 <button
                   onClick={() => toggleOptions(comment._id)} // Toggle options on click

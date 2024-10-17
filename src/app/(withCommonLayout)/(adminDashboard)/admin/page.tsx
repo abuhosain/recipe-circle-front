@@ -2,7 +2,13 @@
 
 import UserProfileDetails from "@/src/components/UI/userDashboard/UserProfileDetails";
 import { useGetAuthUser } from "@/src/hooks/user.hook";
-import { FaUsers, FaClipboardList, FaChartPie, FaPlusCircle } from "react-icons/fa"; // Importing icons
+import Link from "next/link";
+import {
+  FaUsers,
+  FaClipboardList,
+  FaChartPie,
+  FaPlusCircle,
+} from "react-icons/fa"; // Importing icons
 
 export default function UserDashboard() {
   const { data: user, isLoading, error } = useGetAuthUser();
@@ -32,8 +38,12 @@ export default function UserDashboard() {
         <div>
           {/* Welcome Banner */}
           <div className="bg-blue-100 p-4 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-bold text-gray-800">Welcome, {user.data.name}!</h2>
-            <p className="text-gray-600">Here’s what’s happening in your dashboard.</p>
+            <h2 className="text-xl font-bold text-gray-800">
+              Welcome, {user.data.name}!
+            </h2>
+            <p className="text-gray-600">
+              Here’s what’s happening in your dashboard.
+            </p>
           </div>
 
           {/* Stats Overview */}
@@ -65,7 +75,10 @@ export default function UserDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="bg-blue-500 text-white p-4 rounded-lg shadow-md flex items-center justify-center cursor-pointer hover:bg-blue-600 transition">
               <FaPlusCircle className="h-6 w-6 mr-2" />
-              <span>Add New Recipe</span>
+              <Link href={"/admin/create-admin"}>
+                {" "}
+                <span>Add New Admin</span>
+              </Link>
             </div>
             <div className="bg-blue-500 text-white p-4 rounded-lg shadow-md flex items-center justify-center cursor-pointer hover:bg-blue-600 transition">
               <FaUsers className="h-6 w-6 mr-2" />
