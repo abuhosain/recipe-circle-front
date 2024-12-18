@@ -49,23 +49,26 @@ const RecipeForm = () => {
     name: "tags",
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = useCallback((data) => {
-    const formData = new FormData();
-    const recipeData = {
-      ...data,
-      author: user?.id,
-      cookingTime: Number(data.cookingTime), // Ensure cooking time is a number
-      ingredients: data.ingredients.map((ingre: { name: string }) => ({
-        name: ingre.name,
-      })),
-      tags: data.tags.map((tag: { value: string }) => tag.value),
-    };
+  const onSubmit: SubmitHandler<FieldValues> = useCallback(
+    (data) => {
+      const formData = new FormData();
+      const recipeData = {
+        ...data,
+        author: user?.id,
+        cookingTime: Number(data.cookingTime), // Ensure cooking time is a number
+        ingredients: data.ingredients.map((ingre: { name: string }) => ({
+          name: ingre.name,
+        })),
+        tags: data.tags.map((tag: { value: string }) => tag.value),
+      };
 
-    formData.append("data", JSON.stringify(recipeData));
-    imageFiles.forEach((image) => formData.append("file", image));
+      formData.append("data", JSON.stringify(recipeData));
+      imageFiles.forEach((image) => formData.append("file", image));
 
-    handleCreateRecipe(formData);
-  }, [handleCreateRecipe, imageFiles, user?.id]);
+      handleCreateRecipe(formData);
+    },
+    [handleCreateRecipe, imageFiles, user?.id]
+  );
 
   const handleFieldAppend = useCallback(() => {
     appendIngredient({ name: "" });

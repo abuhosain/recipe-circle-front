@@ -1,9 +1,9 @@
 import { protectedRoutes } from "@/src/constant";
-import { MdOutlineVerifiedUser, MdVerified } from "react-icons/md";
+import {  MdVerified } from "react-icons/md";
 import { useUser } from "@/src/context/user.provider";
 import { useGetAuthUser } from "@/src/hooks/user.hook";
 import { logOut } from "@/src/services/AuthService";
-import { Avatar, Badge, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"; // Import Badge component
+import { Avatar,  Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"; // Import Badge component
 import { usePathname, useRouter } from "next/navigation";
 
 export default function NavbarDropdown() {

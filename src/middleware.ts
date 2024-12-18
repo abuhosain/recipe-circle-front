@@ -4,7 +4,13 @@ import { getCurrentUser } from "./services/AuthService";
 
 // Define authentication and protected routes
 const AuthRoutes = ["/login", "/register"];
-const protectedRoutes = ['/profile', '/profile/:page*', '/recipes', '/recipes/:page*'];
+const protectedRoutes = [
+  "/profile",
+  "/profile/:page*",
+  "/recipes",
+  "/recipes/:page*",
+  "/membership",
+];
 
 type Role = keyof typeof roleBasedRoutes;
 
@@ -25,7 +31,7 @@ export async function middleware(request: NextRequest) {
     // Allow access to authentication routes
     if (AuthRoutes.includes(pathname)) {
       return NextResponse.next();
-    } else if (protectedRoutes.some(route => pathname.match(route))) {
+    } else if (protectedRoutes.some((route) => pathname.match(route))) {
       // Redirect to login if trying to access a protected route
       return NextResponse.redirect(
         new URL(`/login?redirect=${pathname}`, request.url)
@@ -33,7 +39,7 @@ export async function middleware(request: NextRequest) {
     }
   } else {
     // If user is authenticated, allow access to protected routes directly
-    if (protectedRoutes.some(route => pathname.match(route))) {
+    if (protectedRoutes.some((route) => pathname.match(route))) {
       return NextResponse.next();
     }
 
@@ -56,5 +62,15 @@ export async function middleware(request: NextRequest) {
 
 // Configuration for matching paths
 export const config = {
-  matcher: ['/login', '/register', '/user/:page*', '/admin/:page*', '/profile', '/profile/:page*', '/recipes', '/recipes/:page*'],
+  matcher: [
+    "/login",
+    "/register",
+    "/user/:page*",
+    "/admin/:page*",
+    "/profile",
+    "/profile/:page*",
+    "/recipes",
+    "/recipes/:page*",
+    "/membership"
+  ],
 };

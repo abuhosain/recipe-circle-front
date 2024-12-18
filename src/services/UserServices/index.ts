@@ -38,7 +38,6 @@ export const GetMeAnUpdate = async (meUpdateData: FormData) => {
         "Content-Type": "multipart/form-data",
       },
     });
-
     return data;
   } catch (error: any) {
     const data = {
