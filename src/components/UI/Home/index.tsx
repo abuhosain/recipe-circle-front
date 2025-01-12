@@ -20,7 +20,6 @@ const getAuthToken = () => {
   return Cookies.get("accessToken");
 };
 
-
 const axiosClient = axios.create({
   baseURL: envConfig.baseApi,
   headers: { "Content-Type": "application/json" },
@@ -56,13 +55,13 @@ export default function RecipeHome() {
     setLoading(true);
 
     try {
-        // Get the token from storage
-        const token = getAuthToken();
+      // Get the token from storage
+      const token = getAuthToken();
 
-        // Set token in Authorization header if available
-        if (token) {
-          axiosClient.defaults.headers["Authorization"] = token;
-        }
+      // Set token in Authorization header if available
+      if (token) {
+        axiosClient.defaults.headers["Authorization"] = token;
+      }
       const response = await axiosClient.get(queryParams);
       const FeedData = response?.data?.data;
       console.log(FeedData);
@@ -95,7 +94,7 @@ export default function RecipeHome() {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.scrollHeight - 1
-    ) {
+    ) { 
       if (!loading && totalPage && totalPage > page) {
         setPage((prev) => prev + 1);
       }
@@ -133,18 +132,13 @@ export default function RecipeHome() {
               startContent={<SearchIcon className="text-base" />}
             />
           </form>
-          <Button
-            className="mt-4 sm:mt-0 bg-default-900 text-default"
-            onClick={() => setSelectedSort("-createdAt")}
-          >
-            Recent Recipes
-          </Button>
+          
         </div>
       </div>
 
       {/* Main Content */}
-      <main>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <main className="flex justify-center">
+        <div className="grid grid-cols-1 gap-4">
           {items.map((recipe) => (
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
