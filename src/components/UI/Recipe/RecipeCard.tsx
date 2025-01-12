@@ -1,54 +1,49 @@
-"use client";
-import { IRecipe } from "@/src/types";
-import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
-import { Rating } from "@smastrom/react-rating";
-import "@smastrom/react-rating/style.css";
-import Link from "next/link";
+'use client'
+ 
+import { IRecipe } from "@/src/types"
+import { Rating } from "@smastrom/react-rating"
+import "@smastrom/react-rating/style.css"
+import Image from "next/image"
+import Link from "next/link"
 
 export default function RecipeCard({ recipe }: { recipe: IRecipe }) {
-  const recipeImage = recipe.images[1];
-
   return (
-    <Card
-      className="py-4 sm:py-6 relative max-w-xs sm:max-w-xl mx-auto shadow-lg rounded-xl transition-transform transform hover:scale-105 hover:shadow-2xl"
-      style={{ width: "100%", margin: "20px" }} // Adjusted margin for small screens
-    >
-      <CardHeader className="pb-0 pt-2 sm:pt-4 flex justify-center">
+    <div className="w-80 h-96 bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105">
+      <div className="relative h-48">
         <Image
-          alt="Card background"
-          className="object-cover w-full rounded-t-xl"
-          src={recipeImage}
-          width={400} // Reduced width for smaller screens
-          height={200} // Reduced height for smaller screens
-          style={{ maxWidth: "100%", height: "auto" }} // Responsive image
+          src={recipe.images[0]}
+          alt={recipe.title}
+          layout="fill"
+          objectFit="cover"
+          className="transition-transform duration-300 ease-in-out hover:scale-110"
         />
-        {/* Absolute positioning for Premium/Free label */}
-        <div className="absolute top-2 right-2 bg-yellow-300 text-black z-10 px-2 py-1 rounded shadow">
-          {recipe?.isPremium ? "Premium" : "Free"}
+        <span className={`absolute top-3 right-3 px-2 py-1 text-xs font-bold rounded-full ${
+          recipe.isPremium ? 'bg-yellow-400 text-yellow-900' : 'bg-green-400 text-green-900'
+        }`}>
+          {recipe.isPremium ? 'PREMIUM' : 'FREE'}
+        </span>
+      </div>
+      <div className="p-4 flex flex-col justify-between h-48">
+        <div>
+          <h2 className="text-xl font-bold mb-2 line-clamp-2 text-gray-800">{recipe.title}</h2>
+          <div className="flex items-center mb-2">
+            <Rating style={{ maxWidth: 100 }} value={recipe.averageRating} readOnly />
+            <span className="ml-2 text-sm font-medium text-gray-600">{recipe.averageRating.toFixed(1)}</span>
+          </div>
+          <p className="text-sm text-gray-600 mb-2 line-clamp-1">
+            by{' '}
+            <Link href={`/profile/${recipe.author._id}`} className="font-medium text-blue-600 hover:underline">
+              {recipe.author.name}
+            </Link>
+          </p>
         </div>
-      </CardHeader>
-      <CardBody className="overflow-visible py-4 sm:py-6 px-4 sm:px-8">
-        <p className="text-lg sm:text-2xl uppercase font-bold">
-          {recipe?.title}
-        </p>
-        <div className="flex gap-2 items-center my-2">
-          <Rating style={{ maxWidth: 100 }} value={recipe?.averageRating} readOnly />
-          <p className="text-md sm:text-xl mt-1 text-gray-600">{recipe?.averageRating}</p>
-        </div>
-        <h2 className="text-gray-600 mb-2">
-          Posted by{" "}
-          <Link className="underline text-blue-600" href={`/profile/${recipe.author._id}`}>
-            <b>
-              <i>{recipe?.author?.name}</i>
-            </b>
-          </Link>
-        </h2>
-        <Link href={`/recipes/${recipe?._id}`} className="w-full">
-          <Button className="mt-4 sm:mt-6 w-full" color="primary" size="lg">
-            View Details
-          </Button>
+        <Link href={`/recipes/${recipe._id}`} className="block w-full mt-auto">
+          <button className="w-full px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-md transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            View Recipe
+          </button>
         </Link>
-      </CardBody>
-    </Card>
-  );
+      </div>
+    </div>
+  )
 }
+
