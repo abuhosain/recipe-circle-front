@@ -1,198 +1,155 @@
 "use client";
 
-import envConfig from "@/src/config/env.confg";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Input } from "@nextui-org/react";
+import { SearchIcon } from "lucide-react";
 import useDebounce from "@/src/hooks/debounce.hook";
 import { IRecipe } from "@/src/types";
+import envConfig from "@/src/config/env.confg";
 import axios from "axios";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import Container from "../Container";
-import { Button } from "@nextui-org/button";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Input, Spinner } from "@nextui-org/react";
-import { SearchIcon } from "lucide-react";
 import RecipeCard from "../Recipe/RecipeCard";
-import Link from "next/link";
 import { useGetAuthUser } from "@/src/hooks/user.hook";
-
-interface RecipeProps {
-  recipes: IRecipe[];
-}
+import Link from "next/link";
+import { Button } from "@nextui-org/button";
+import Cookies from "js-cookie";
 
 // get access token
 const getAuthToken = () => {
   return Cookies.get("accessToken");
 };
 
-// Create a new Axios instance for client-side requests
+
 const axiosClient = axios.create({
-  baseURL: envConfig.baseApi, // base url
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: envConfig.baseApi,
+  headers: { "Content-Type": "application/json" },
 });
 
-export default function RecipeHome({ recipes }: RecipeProps) {
+export default function RecipeHome() {
   const { data: user } = useGetAuthUser();
   const { register, watch } = useForm();
   const searchTerm = useDebounce(watch("search"), 500);
   const [items, setItems] = useState<IRecipe[]>([]);
-  const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [selectedSort, setSelectedSort] = useState<string>("");
-  console.log(selectedSort, "selected");
-  console.log(user, "user");
-  const router = useRouter();
+  const [totalPage, setTotalPage] = useState<number | undefined>();
+
+  // Generate query parameters
+  const queryParams = useMemo(() => {
+    const query: Record<string, any> = {
+      searchTerm,
+      selectedSort,
+      page,
+    };
+    const filteredQuery = Object.fromEntries(
+      Object.entries(query).filter(
+        ([_, value]) => value !== null && value !== "" && value !== undefined
+      )
+    );
+    return `/recipe?${new URLSearchParams(filteredQuery).toString()}`;
+  }, [searchTerm, selectedSort, page]);
 
   const fetchData = async () => {
     if (loading) return;
     setLoading(true);
 
     try {
-      // Get the token from storage
-      const token = getAuthToken();
+        // Get the token from storage
+        const token = getAuthToken();
 
-      // Set token in Authorization header if available
-      if (token) {
-        axiosClient.defaults.headers["Authorization"] = token;
-      }
-
-      let response;
-      if (searchTerm) {
-        response = await axiosClient.get(`/recipe?searchTerm=${searchTerm}`);
-      } else if (selectedSort == "-createdAt") {
-        response = await axiosClient.get(`/recipe?sort=${selectedSort}`);
-      } else if (searchTerm && selectedSort == "-createdAt") {
-        response = await axiosClient.get(
-          `/recipe?searchTerm=${searchTerm}&sort=${selectedSort}`
-        );
-      } else {
-        response = await axiosClient.get(`/recipe`);
-      }
-
+        // Set token in Authorization header if available
+        if (token) {
+          axiosClient.defaults.headers["Authorization"] = token;
+        }
+      const response = await axiosClient.get(queryParams);
       const FeedData = response?.data?.data;
       console.log(FeedData);
-      if (FeedData?.recipes) {
-        // Update the items with the fetched data
-        setItems((prevItems) => [...prevItems, ...FeedData?.recipes]);
+      setTotalPage(FeedData?.totalData?.totalPage);
 
-        // Check if there are no more results
-        if (FeedData.length === 0) {
-          setHasMore(false);
-        } else {
-          // Increment the page number for pagination
-          setPage((prevPage) => prevPage + 1);
-        }
+      if (page === 1) {
+        setItems(FeedData?.recipes || []);
       } else {
-        console.error("Error: No data found in response");
-        setHasMore(false); // Stop fetching if no data is found
+        setItems((prev) => [...prev, ...(FeedData?.recipes || [])]);
       }
     } catch (error) {
-      console.error("Error fetching data:", error); // Log errors for debugging
+      console.error("Error fetching recipes:", error);
     } finally {
-      setLoading(false); // Set loading state to false after the request
+      setLoading(false);
     }
   };
 
-  // Reset and fetch new data when search query changes
+  // Reset page and items on filter change
   useEffect(() => {
-    setItems([]); // Reset items
-    setPage(1); // Reset page
-    setHasMore(true); // Reset hasMore flag
-    if (searchTerm !== undefined) {
-      fetchData();
-    } else if (selectedSort == "-createdAt") {
-      fetchData();
-    }
+    setPage(1);
+    setItems([]);
   }, [searchTerm, selectedSort]);
+
+  // Fetch data when page changes or filters are updated
+  useEffect(() => {
+    fetchData();
+  }, [page, queryParams]);
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.scrollHeight - 1
+    ) {
+      if (!loading && totalPage && totalPage > page) {
+        setPage((prev) => prev + 1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading, totalPage]);
 
   return (
     <Container>
-      <div className="mb-8 p-6 bg-white shadow-lg rounded-lg sticky top-0 z-20 border border-gray-200 dark:bg-black dark:border-gray-700 dark:text-white">
-        <h2 className="text-4xl font-bold text-center mb-4 text-dark dark:text-light">
-          Discover Delicious Recipes
+      {/* Header */}
+      <div className="mb-8 p-6 bg-white dark:bg-black shadow-lg rounded-b-lg-lg sticky top-0 z-20 border border-gray-200">
+        <h2 className="text-4xl font-bold text-center mb-4">
+          Discover Recipes
         </h2>
-
         {!(user?.data?.isPremium || user?.data?.role === "admin") && (
-          <Link href={"/membership"} className="flex justify-center">
-            <p className="text-center text-xl  px-3 py-2 rounded-md">
-              Premium recipe is only for premium user
-            </p>
+          <Link href="/membership" className="flex justify-center">
+            <Button className="bg-amber-400">Get Premium Membership</Button>
           </Link>
         )}
-
-        {/* header */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
-          {/* Search Bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-center">
           <form>
             <Input
               {...register("search")}
               aria-label="Search"
-              placeholder="Search Recipe..."
-              size="md"
               classNames={{
                 inputWrapper: "bg-default-100",
                 input: "text-sm",
               }}
-              startContent={
-                <SearchIcon className="flex-shrink-0 pointer-events-none text-base " />
-              }
-              type="text"
+              placeholder="Search Recipe..."
+              size="md"
+              startContent={<SearchIcon className="text-base" />}
             />
           </form>
-          {!(user?.data?.isPremium || user?.data?.role === "admin") && (
-            <Link href={"/membership"} className="flex justify-center">
-              <Button className="text-center bg-amber-400">
-                Get Premium Membership
-              </Button>
-            </Link>
-          )}
-
-          <div className="flex items-center w-full sm:w-auto mt-4 sm:mt-0">
-            <Button
-              className="sm:mt-0 sm:ml-4 w-full rounded-md bg-default-900 font-semibold text-default"
-              size="md"
-              onClick={() => setSelectedSort("-createdAt")}
-            >
-              Recent Recipe
-            </Button>
-          </div>
+          <Button
+            className="mt-4 sm:mt-0 bg-default-900 text-default"
+            onClick={() => setSelectedSort("-createdAt")}
+          >
+            Recent Recipes
+          </Button>
         </div>
       </div>
 
-      {/* main content */}
-
-      <main className="w-full">
-        <div className="flex justify-center">
-          <div className=" ">
-            <div className="">
-              <InfiniteScroll
-                dataLength={items?.length}
-                next={fetchData}
-                style={{ overflow: "inherit", width: "100%" }}
-                hasMore={hasMore}
-                loader={<Spinner />}
-                endMessage={
-                  <p className="text-2xl text-center font-bold text-gray-700 dark:text-gray-300 mb-2">
-                    No more Recipes!
-                  </p>
-                }
-              >
-                <div className="w-full">
-                  {items?.map((recipe: IRecipe, index) => (
-                    <RecipeCard
-                      key={`${recipe?._id}-${index}`}
-                      recipe={recipe}
-                    />
-                  ))}
-                </div>
-              </InfiniteScroll>
-            </div>
-          </div>
+      {/* Main Content */}
+      <main>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {items.map((recipe) => (
+            <RecipeCard key={recipe._id} recipe={recipe} />
+          ))}
         </div>
+        {loading && <p className="text-center mt-4">Loading...</p>}
       </main>
     </Container>
   );
