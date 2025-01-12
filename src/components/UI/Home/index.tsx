@@ -1,6 +1,5 @@
 "use client";
-import { FaHome, FaInfoCircle, FaPhoneAlt, FaCog, FaSignOutAlt } from 'react-icons/fa';
-
+import { FaHome, FaInfoCircle, FaPhoneAlt, FaCog, FaSignOutAlt, FaTimes } from 'react-icons/fa';
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@nextui-org/react";
@@ -35,8 +34,9 @@ export default function RecipeHome() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [selectedSort, setSelectedSort] = useState<string>("");
-  const [totalPage, setTotalPage] = useState<number | undefined>();
 
+  const [totalPage, setTotalPage] = useState<number | undefined>();
+ 
   // Generate query parameters
   const queryParams = useMemo(() => {
     const query: Record<string, any> = {
@@ -110,54 +110,52 @@ export default function RecipeHome() {
 
   return (
     <Container>
-  
-{/* Left Sidebar */}
-<div className="fixed top-0 left-0 h-full w-64 bg-yellow-400 text-gray-800 shadow-lg p-6 pt-10">
-  <div className="text-2xl font-semibold text-gray-900 mb-6">Dashboard</div>
-  
-  <ul className="space-y-6">
-    {/* Home Link */}
-    <li>
-      <Link href="/" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
-        <FaHome className="w-5 h-5 text-gray-700" />
-        <span>Home</span>
-      </Link>
-    </li>
+      {/* Left Sidebar */}
+      <div className={`hidden md:fixed top-0 left-0 h-full w-0 md:w-64 bg-yellow-400 text-gray-800 shadow-lg p-6 pt-10   md:block`}>
+        <div className="text-2xl font-semibold text-gray-900 mb-6">Recipe Circle</div>
+        <ul className="space-y-6">
+          {/* Home Link */}
+          <li>
+            <Link href="/" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+              <FaHome className="w-5 h-5 text-gray-700 hover:text-white transition" />
+              <span>Home</span>
+            </Link>
+          </li>
 
-    {/* About Link */}
-    <li>
-      <Link href="/about" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
-        <FaInfoCircle className="w-5 h-5 text-gray-700" />
-        <span>About</span>
-      </Link>
-    </li>
+          {/* About Link */}
+          <li>
+            <Link href="/about" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+              <FaInfoCircle className="w-5 h-5 text-gray-700 hover:text-white transition" />
+              <span>About</span>
+            </Link>
+          </li>
 
-    {/* Contact Link */}
-    <li>
-      <Link href="/contact" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
-        <FaPhoneAlt className="w-5 h-5 text-gray-700" />
-        <span>Contact</span>
-      </Link>
-    </li>
+          {/* Contact Link */}
+          <li>
+            <Link href="/contact" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+              <FaPhoneAlt className="w-5 h-5 text-gray-700 hover:text-white transition" />
+              <span>Contact</span>
+            </Link>
+          </li>
 
-    {/* Settings Link */}
-    <li>
-      <Link href="/profile/settings" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
-        <FaCog className="w-5 h-5 text-gray-700" />
-        <span>Settings</span>
-      </Link>
-    </li>
+          {/* Settings Link */}
+          <li>
+            <Link href="/profile/settings" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+              <FaCog className="w-5 h-5 text-gray-700 hover:text-white transition" />
+              <span>Settings</span>
+            </Link>
+          </li>
+        </ul>
+      </div>
 
-  
-  </ul>
-</div>
+      
 
       {/* Main Content Area */}
-      <div className="ml-64 p-6">
+      <div className="md:ml-64 p-6">
         {/* Search Bar and Advanced Search Button */}
         <div className="mb-4 p-6 bg-gradient-to-r from-yellow-50 via-white to-yellow-50 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-b-lg sticky top-0 z-20 border border-gray-300 dark:border-gray-700">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <form className="w-full sm:w-3/4">
+            <form className="w-full">
               <Input
                 {...register("search")}
                 aria-label="Search"
@@ -167,13 +165,11 @@ export default function RecipeHome() {
                 }}
                 placeholder="Search Recipe by name or ingredients..."
                 size="lg"
-                startContent={
-                  <SearchIcon className="text-lg text-gray-500 dark:text-gray-400" />
-                }
+                startContent={<SearchIcon className="text-lg text-gray-500 dark:text-gray-400" />}
               />
             </form>
 
-            {/* Button for Advanced Search */}
+            {/* Button for Advanced Search (Hidden on Small Devices) */}
             <Button
               className="hidden md:block bg-primary text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300 w-1/4"
               onClick={() =>
@@ -184,12 +180,7 @@ export default function RecipeHome() {
                   confirmButtonText: "Got it!",
                   confirmButtonColor: "#3085d6",
                   background: "#fefefe",
-                  backdrop: `
-                    rgba(0,0,0,0.4)
-                    url("https://i.giphy.com/media/3o7aD2saalBwwftBIY/giphy.webp")
-                    left top
-                    no-repeat
-                  `,
+                  backdrop: `rgba(0,0,0,0.4) url("https://i.giphy.com/media/3o7aD2saalBwwftBIY/giphy.webp") left top no-repeat`,
                 })
               }
             >
@@ -198,9 +189,8 @@ export default function RecipeHome() {
           </div>
         </div>
 
-        {/* Recipe Cards */}
         <main className="flex justify-center">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 justify-center">
             {items.map((recipe) => (
               <RecipeCard key={recipe._id} recipe={recipe} />
             ))}
