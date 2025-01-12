@@ -14,6 +14,7 @@ import { useGetAuthUser } from "@/src/hooks/user.hook";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 // get access token
 const getAuthToken = () => {
@@ -94,7 +95,7 @@ export default function RecipeHome() {
     if (
       window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.scrollHeight - 1
-    ) { 
+    ) {
       if (!loading && totalPage && totalPage > page) {
         setPage((prev) => prev + 1);
       }
@@ -109,32 +110,89 @@ export default function RecipeHome() {
   return (
     <Container>
       {/* Header */}
-      <div className="mb-8 p-6 bg-white dark:bg-black shadow-lg rounded-b-lg-lg sticky top-0 z-20 border border-gray-200">
-        <h2 className="text-4xl font-bold text-center mb-4">
-          Discover Recipes
-        </h2>
-        {!(user?.data?.isPremium || user?.data?.role === "admin") && (
-          <Link href="/membership" className="flex justify-center">
-            <Button className="bg-amber-400">Get Premium Membership</Button>
-          </Link>
-        )}
-        <div className="flex flex-col sm:flex-row justify-between items-center">
-          <form>
-            <Input
-              {...register("search")}
-              aria-label="Search"
-              classNames={{
-                inputWrapper: "bg-default-100",
-                input: "text-sm",
-              }}
-              placeholder="Search Recipe..."
-              size="md"
-              startContent={<SearchIcon className="text-base" />}
-            />
-          </form>
-          
-        </div>
-      </div>
+      <div className="mb-2 p-6 bg-gradient-to-r from-yellow-50 via-white to-yellow-50 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-b-lg sticky top-0 z-20 border border-gray-300 dark:border-gray-700">
+  <h2 className="text-4xl font-bold text-center mb-4 text-gray-800 dark:text-gray-100 tracking-wide drop-shadow-md">
+    Discover Delicious Recipes
+  </h2>
+
+  {!(user?.data?.isPremium || user?.data?.role === "admin") && (
+    <div className="flex justify-center mb-6">
+      <Link href="/membership" className="relative">
+        <Button className="bg-amber-400 hover:bg-amber-500 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+          Get Premium Membership
+        </Button>
+        <span className="absolute top-[-10px] right-[-10px] bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+          New
+        </span>
+      </Link>
+    </div>
+  )}
+
+  <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+    <form className="w-full sm:w-3/4">
+      <Input
+        {...register("search")}
+        aria-label="Search"
+        classNames={{
+          inputWrapper: "bg-default-100 dark:bg-gray-800 rounded-lg",
+          input: "text-sm text-gray-800 dark:text-gray-200",
+        }}
+        placeholder="Search Recipe by name or ingredients..."
+        size="lg"
+        startContent={
+          <SearchIcon className="text-lg text-gray-500 dark:text-gray-400" />
+        }
+      />
+    </form>
+
+    {/* Button for Advanced Search */}
+    <Button
+      className="hidden md:block bg-primary text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300 w-1/4"
+      onClick={() =>
+        Swal.fire({
+          title: "Advanced Search",
+          text: "This feature is coming soon! Stay tuned for updates.",
+          icon: "info",
+          confirmButtonText: "Got it!",
+          confirmButtonColor: "#3085d6",
+          background: "#fefefe",
+          backdrop: `
+            rgba(0,0,0,0.4)
+            url("https://i.giphy.com/media/3o7aD2saalBwwftBIY/giphy.webp")
+            left top
+            no-repeat
+          `,
+        })
+      }
+    >
+      Advanced Search
+    </Button>
+
+    {/* For small screens, display the button centered */}
+    <Button
+      className="sm:hidden bg-primary text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300 w-full"
+      onClick={() =>
+        Swal.fire({
+          title: "Advanced Search",
+          text: "This feature is coming soon! Stay tuned for updates.",
+          icon: "info",
+          confirmButtonText: "Got it!",
+          confirmButtonColor: "#3085d6",
+          background: "#fefefe",
+          backdrop: `
+            rgba(0,0,0,0.4)
+            url("https://i.giphy.com/media/3o7aD2saalBwwftBIY/giphy.webp")
+            left top
+            no-repeat
+          `,
+        })
+      }
+    >
+      Advanced Search
+    </Button>
+  </div>
+</div>
+
 
       {/* Main Content */}
       <main className="flex justify-center">
