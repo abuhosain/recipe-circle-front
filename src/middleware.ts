@@ -2,75 +2,50 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { getCurrentUser } from "./services/AuthService";
 
-// Define authentication and protected routes
-const AuthRoutes = ["/login", "/register"];
+// Define protected routes (including home page '/')
 const protectedRoutes = [
   "/profile",
-  "/profile/:page*",
   "/recipes",
   "/recipes/:page*",
   "/membership",
+  "/user/:page*",
+  "/admin/:page*",
+  "/"
 ];
 
-type Role = keyof typeof roleBasedRoutes;
-
-const roleBasedRoutes = {
-  user: [/^\/user/],
-  admin: [/^\/admin/],
-};
-
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if user is authenticated
+  // Check if the user is authenticated
   const user = await getCurrentUser();
 
-  // If user is not authenticated
+  // If user is not authenticated and trying to access any protected route
   if (!user) {
-    // Allow access to authentication routes
-    if (AuthRoutes.includes(pathname)) {
-      return NextResponse.next();
-    } else if (protectedRoutes.some((route) => pathname.match(route))) {
-      // Redirect to login if trying to access a protected route
+    // Redirect to login if trying to access a protected route, including the home page
+    if (protectedRoutes.some((route) => pathname.match(route))) {
       return NextResponse.redirect(
         new URL(`/login?redirect=${pathname}`, request.url)
       );
     }
   } else {
-    // If user is authenticated, allow access to protected routes directly
-    if (protectedRoutes.some((route) => pathname.match(route))) {
-      return NextResponse.next();
-    }
-
-    // If user role is defined, check for role-based access
-    if (user?.role && roleBasedRoutes[user?.role as Role]) {
-      const routes = roleBasedRoutes[user?.role as Role];
-
-      // Allow access to routes based on user role
-      if (routes.some((route) => pathname.match(route))) {
-        return NextResponse.next();
-      }
-    }
-    // Redirect to home if user role does not match any routes
-    return NextResponse.redirect(new URL("/", request.url));
+    // If user is authenticated, allow access to all routes, including home page
+    return NextResponse.next();
   }
 
-  // Allow access to any other routes
+  // Default response if no condition matched (should not happen)
   return NextResponse.next();
 }
 
 // Configuration for matching paths
 export const config = {
   matcher: [
-    "/login",
-    "/register",
-    "/user/:page*",
-    "/admin/:page*",
     "/profile",
     "/profile/:page*",
     "/recipes",
     "/recipes/:page*",
-    "/membership"
+    "/membership",
+    "/user/:page*",
+    "/admin/:page*",
+    "/" // Match the home page as well
   ],
 };
