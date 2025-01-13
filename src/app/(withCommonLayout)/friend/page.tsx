@@ -14,6 +14,7 @@ import { useUser } from "@/src/context/user.provider";
 import { useGetAllUser } from "@/src/hooks/admin.hook";
 import { useAddFollow, useAddUnFollow } from "@/src/hooks/user.hook";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface User {
   _id: string;
@@ -76,9 +77,7 @@ const FriendPages = () => {
         onSuccess: () => {
           const user = followingUsers.find((user) => user._id === userId);
           if (user) {
-            setFollowingUsers((prev) =>
-              prev.filter((u) => u._id !== userId)
-            );
+            setFollowingUsers((prev) => prev.filter((u) => u._id !== userId));
             setNonFollowingUsers((prev) => [...prev, user]);
             toast.success(`${user.name} unfollowed successfully!`);
           }
@@ -116,7 +115,13 @@ const FriendPages = () => {
                       <div className="flex gap-2 items-center">
                         <Avatar src={user.profilePicture} alt={user.name} />
                         <span className="font-medium text-gray-800">
-                          {user.name}
+                          <Link
+                            className="font-medium text-blue-600 hover:underline"
+                            href={`/profile/${user?._id}`}
+                          >
+                            {" "}
+                            {user.name}
+                          </Link>
                         </span>
                       </div>
                       <Button
@@ -144,7 +149,13 @@ const FriendPages = () => {
                       <div className="flex gap-2 items-center">
                         <Avatar src={user.profilePicture} alt={user.name} />
                         <span className="font-medium text-gray-800">
-                          {user.name}
+                          <Link
+                            className="font-medium text-blue-600 hover:underline"
+                            href={`/profile/${user?._id}`}
+                          >
+                            {" "}
+                            {user.name}
+                          </Link>
                         </span>
                       </div>
                       <Button
