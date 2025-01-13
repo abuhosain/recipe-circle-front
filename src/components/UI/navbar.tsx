@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import React from 'react'
+import React from "react";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -9,43 +9,43 @@ import {
   NavbarBrand,
   NavbarItem,
   NavbarMenuItem,
-} from "@nextui-org/navbar"
-import { Link } from "@nextui-org/link"
-import { Button } from "@nextui-org/button"
-import { Avatar } from "@nextui-org/avatar"
-import NextLink from "next/link"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
+} from "@nextui-org/navbar";
+import { Link } from "@nextui-org/link";
+import { Button } from "@nextui-org/button";
+import NextLink from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
-import clsx from "clsx"
-import { useUser } from '@/src/context/user.provider'
-import { siteConfig } from '@/src/config/site'
-import { ThemeSwitch } from './theme-switch'
-import NavbarDropdown from './NavbarDropdown'
-import recipLogo from "@/src/assets/recipe-circle.png"
+import { ThemeSwitch } from "./theme-switch";
+import NavbarDropdown from "./NavbarDropdown";
+
+import { useUser } from "@/src/context/user.provider";
+import { siteConfig } from "@/src/config/site";
+import recipLogo from "@/src/assets/recipe-circle.png";
 
 export const Navbar = () => {
-  const { user } = useUser()
-  const pathname = usePathname()
+  const { user } = useUser();
+  const pathname = usePathname();
 
-  const isActive = (href: string) => pathname === href
+  const isActive = (href: string) => pathname === href;
 
   return (
-    <NextUINavbar 
-      maxWidth="xl" 
-      position="sticky" 
+    <NextUINavbar
       className="bg-background/70 dark:bg-background/80 backdrop-blur-lg border-b border-divider shadow-sm"
+      maxWidth="xl"
+      position="sticky"
     >
       {/* Left: Logo and Brand */}
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-4 max-w-fit">
           <NextLink className="flex items-center gap-2" href="/">
-            <Image 
-              src={recipLogo} 
-              alt="Site logo" 
-              width={45} 
-              height={45} 
+            <Image
+              alt="Site logo"
               className="rounded-full shadow-md"
+              height={45}
+              src={recipLogo}
+              width={45}
             />
             <span className="font-extrabold text-xl text-primary">RCircle</span>
           </NextLink>
@@ -58,7 +58,7 @@ export const Navbar = () => {
                 className={clsx(
                   "text-md font-medium transition-all",
                   "hover:text-primary hover:underline",
-                  isActive(item.href) && "text-primary font-semibold "
+                  isActive(item.href) && "text-primary font-semibold ",
                 )}
                 href={item.href}
               >
@@ -70,7 +70,10 @@ export const Navbar = () => {
       </NavbarContent>
 
       {/* Right: User Actions */}
-      <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
+      <NavbarContent
+        className="hidden sm:flex basis-1/5 sm:basis-full"
+        justify="end"
+      >
         <NavbarItem>
           <ThemeSwitch />
         </NavbarItem>
@@ -80,21 +83,21 @@ export const Navbar = () => {
           </NavbarItem>
         ) : (
           <NavbarItem className="flex gap-3">
-            <Button 
-              as={Link} 
-              color="primary" 
-              href="/login" 
-              variant="flat"
+            <Button
+              as={Link}
               className="font-semibold px-4 py-2 rounded-lg"
+              color="primary"
+              href="/login"
+              variant="flat"
             >
               Log In
             </Button>
-            <Button 
-              as={Link} 
-              color="primary" 
-              href="/signup" 
-              variant="solid"
+            <Button
+              as={Link}
               className="font-semibold px-4 py-2 rounded-lg"
+              color="primary"
+              href="/signup"
+              variant="solid"
             >
               Sign Up
             </Button>
@@ -113,13 +116,13 @@ export const Navbar = () => {
         {siteConfig.navMenuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              href={item.href}
-              color="foreground"
               className={clsx(
                 "w-full text-lg font-medium transition-all",
                 "hover:text-primary",
-                isActive(item.href) && "text-primary font-semibold"
+                isActive(item.href) && "text-primary font-semibold",
               )}
+              color="foreground"
+              href={item.href}
             >
               {item.label}
             </Link>
@@ -132,23 +135,23 @@ export const Navbar = () => {
         ) : (
           <>
             <NavbarMenuItem>
-              <Button 
-                as={Link} 
-                color="primary" 
-                href="/login" 
-                variant="flat"
+              <Button
+                as={Link}
                 className="w-full font-semibold px-4 py-2 rounded-lg"
+                color="primary"
+                href="/login"
+                variant="flat"
               >
                 Log In
               </Button>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Button 
-                as={Link} 
-                color="primary" 
-                href="/signup" 
-                variant="solid"
+              <Button
+                as={Link}
                 className="w-full font-semibold px-4 py-2 rounded-lg"
+                color="primary"
+                href="/signup"
+                variant="solid"
               >
                 Sign Up
               </Button>
@@ -157,5 +160,5 @@ export const Navbar = () => {
         )}
       </NavbarMenu>
     </NextUINavbar>
-  )
-}
+  );
+};

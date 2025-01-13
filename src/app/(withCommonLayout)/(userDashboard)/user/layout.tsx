@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useGetAuthUser } from "@/src/hooks/user.hook";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -14,6 +13,8 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa"; // Importing from Font Awesome
+
+import { useGetAuthUser } from "@/src/hooks/user.hook";
 
 const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
   const { data: user } = useGetAuthUser();
@@ -86,7 +87,7 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
       <div className="w-full flex flex-col lg:ml-64 ">
         {/* Sidebar Toggle Button for Mobile */}
         <div className="flex justify-between items-center bg-white p-4 shadow-lg lg:hidden z-50">
-          <button onClick={toggleSidebar} className="text-gray-700">
+          <button className="text-gray-700" onClick={toggleSidebar}>
             {sidebarOpen ? (
               <FaTimes className="h-8 w-8" />
             ) : (
@@ -106,7 +107,7 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
               Enjoy exclusive content and features by joining our membership!
             </p>
             <Link href="/membership">
-              <Button color="success" className="w-full">
+              <Button className="w-full" color="success">
                 Get Premium Membership
               </Button>
             </Link>

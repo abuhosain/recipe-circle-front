@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import UserProfileDetails from "@/src/components/UI/userDashboard/UserProfileDetails";
 import { useGetAuthUser } from "@/src/hooks/user.hook";
 export default function UserDashboard() {
   const { data: user, isLoading, error } = useGetAuthUser();
 
-console.log(user?.data)
+  console.log(user?.data);
   // Loading state
   if (isLoading) {
     return <div>Loading...</div>;
@@ -21,12 +21,11 @@ console.log(user?.data)
     <div className="w-full mx-auto">
       {user ? (
         <div>
-           <UserProfileDetails user={user?.data} />
+          <UserProfileDetails user={user?.data} />
         </div>
       ) : (
         <div>No user data available</div>
       )}
     </div>
   );
- }
- 
+}

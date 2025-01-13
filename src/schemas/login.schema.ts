@@ -7,6 +7,7 @@ const loginValidationSchema = z.object({
     .trim()
     .min(6, "Password need to be at least 6 character"),
 });
+
 export default loginValidationSchema;
 
 export const forgotPasswordValidationSchema = z.object({

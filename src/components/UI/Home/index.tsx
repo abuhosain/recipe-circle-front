@@ -1,20 +1,22 @@
 "use client";
-import { FaHome, FaInfoCircle, FaPhoneAlt, FaCog, FaSignOutAlt, FaTimes } from 'react-icons/fa';
+import { FaHome, FaInfoCircle, FaPhoneAlt, FaCog } from "react-icons/fa";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@nextui-org/react";
 import { SearchIcon } from "lucide-react";
-import useDebounce from "@/src/hooks/debounce.hook";
-import { IRecipe } from "@/src/types";
-import envConfig from "@/src/config/env.confg";
 import axios from "axios";
-import Container from "../Container";
-import RecipeCard from "../Recipe/RecipeCard";
-import { useGetAuthUser } from "@/src/hooks/user.hook";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+
+import RecipeCard from "../Recipe/RecipeCard";
+import Container from "../Container";
+
+import { useGetAuthUser } from "@/src/hooks/user.hook";
+import envConfig from "@/src/config/env.confg";
+import { IRecipe } from "@/src/types";
+import useDebounce from "@/src/hooks/debounce.hook";
 
 // get access token
 const getAuthToken = () => {
@@ -36,7 +38,7 @@ export default function RecipeHome() {
   const [selectedSort, setSelectedSort] = useState<string>("");
 
   const [totalPage, setTotalPage] = useState<number | undefined>();
- 
+
   // Generate query parameters
   const queryParams = useMemo(() => {
     const query: Record<string, any> = {
@@ -46,9 +48,10 @@ export default function RecipeHome() {
     };
     const filteredQuery = Object.fromEntries(
       Object.entries(query).filter(
-        ([_, value]) => value !== null && value !== "" && value !== undefined
-      )
+        ([_, value]) => value !== null && value !== "" && value !== undefined,
+      ),
     );
+
     return `/recipe?${new URLSearchParams(filteredQuery).toString()}`;
   }, [searchTerm, selectedSort, page]);
 
@@ -66,6 +69,7 @@ export default function RecipeHome() {
       }
       const response = await axiosClient.get(queryParams);
       const FeedData = response?.data?.data;
+
       console.log(FeedData);
       setTotalPage(FeedData?.totalData?.totalPage);
 
@@ -105,18 +109,26 @@ export default function RecipeHome() {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading, totalPage]);
 
   return (
     <Container>
       {/* Left Sidebar */}
-      <div className={`hidden md:fixed top-0 left-0 h-full w-0 md:w-64 bg-yellow-400 text-gray-800 shadow-lg p-6 pt-10   md:block`}>
-        <div className="text-2xl font-semibold text-gray-900 mb-6">Recipe Circle</div>
+      <div
+        className={`hidden md:fixed top-0 left-0 h-full w-0 md:w-64 bg-yellow-400 text-gray-800 shadow-lg p-6 pt-10   md:block`}
+      >
+        <div className="text-2xl font-semibold text-gray-900 mb-6">
+          Recipe Circle
+        </div>
         <ul className="space-y-6">
           {/* Home Link */}
           <li>
-            <Link href="/" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+            <Link
+              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
+              href="/"
+            >
               <FaHome className="w-5 h-5 text-gray-700 hover:text-white transition" />
               <span>Home</span>
             </Link>
@@ -124,7 +136,10 @@ export default function RecipeHome() {
 
           {/* About Link */}
           <li>
-            <Link href="/about" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+            <Link
+              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
+              href="/about"
+            >
               <FaInfoCircle className="w-5 h-5 text-gray-700 hover:text-white transition" />
               <span>About</span>
             </Link>
@@ -132,7 +147,10 @@ export default function RecipeHome() {
 
           {/* Contact Link */}
           <li>
-            <Link href="/contact" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+            <Link
+              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
+              href="/contact"
+            >
               <FaPhoneAlt className="w-5 h-5 text-gray-700 hover:text-white transition" />
               <span>Contact</span>
             </Link>
@@ -140,15 +158,16 @@ export default function RecipeHome() {
 
           {/* Settings Link */}
           <li>
-            <Link href="/profile/settings" className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition">
+            <Link
+              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
+              href="/profile/settings"
+            >
               <FaCog className="w-5 h-5 text-gray-700 hover:text-white transition" />
               <span>Settings</span>
             </Link>
           </li>
         </ul>
       </div>
-
-      
 
       {/* Main Content Area */}
       <div className="md:ml-64 p-6">
@@ -165,7 +184,9 @@ export default function RecipeHome() {
                 }}
                 placeholder="Search Recipe by name or ingredients..."
                 size="lg"
-                startContent={<SearchIcon className="text-lg text-gray-500 dark:text-gray-400" />}
+                startContent={
+                  <SearchIcon className="text-lg text-gray-500 dark:text-gray-400" />
+                }
               />
             </form>
 

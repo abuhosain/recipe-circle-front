@@ -3,13 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ReactNode } from "react";
-import {
-  FaHome,
-  FaUserEdit,
-  FaBook,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa"; // Importing from Font Awesome
+import { FaHome, FaUserEdit, FaBook, FaBars, FaTimes } from "react-icons/fa"; // Importing from Font Awesome
 
 const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -86,7 +80,7 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
         <div
           className="fixed inset-0 bg-black opacity-50 lg:hidden z-40"
           onClick={toggleSidebar}
-        ></div>
+        />
       )}
     </div>
   );

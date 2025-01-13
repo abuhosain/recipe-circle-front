@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import Container from "@/src/components/UI/Container";
 import RecipeDetails from "@/src/components/UI/Recipe/RecipeDetails";
 import { getCurrentUser } from "@/src/services/AuthService";
@@ -9,9 +9,12 @@ interface IProps {
     recipeId: string;
   };
 }
-export default async function RecipeDetailsPage({ params: { recipeId } }: IProps) {
-  const user : any = await getCurrentUser();
+export default async function RecipeDetailsPage({
+  params: { recipeId },
+}: IProps) {
+  const user: any = await getCurrentUser();
   const { data: recipe } = await getSingleRecipesById(recipeId);
+
   return (
     <Container>
       <div className="mx-auto  ">

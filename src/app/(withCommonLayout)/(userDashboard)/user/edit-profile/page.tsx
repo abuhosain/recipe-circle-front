@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Button } from "@nextui-org/button";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { ChangeEvent, useState } from "react";
+
 import { useGetAuthUser, useGetMeAnUpdate } from "@/src/hooks/user.hook";
 import { useUser } from "@/src/context/user.provider";
 import FXForm from "@/src/components/form/FXForm";
@@ -22,10 +23,12 @@ const EditMyProfilePage = () => {
   const { mutate: updateProfile, isPending } = useGetMeAnUpdate();
   const { data } = useGetAuthUser();
   const { setIsLoading } = useUser();
+
   console.log(data?.data, "user");
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const formData = new FormData();
-    console.log(data)
+
+    console.log(data);
     if (imageFiles !== null) {
       formData.append("file", imageFiles);
     }
@@ -39,6 +42,7 @@ const EditMyProfilePage = () => {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files![0];
+
     setImageFiles(files);
   };
 
@@ -49,9 +53,9 @@ const EditMyProfilePage = () => {
       </h2>
 
       <FXForm
-        onSubmit={onSubmit}
-        resolver={zodResolver(profileSchema)}
         defaultValues={data?.data}
+        resolver={zodResolver(profileSchema)}
+        onSubmit={onSubmit}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Personal Information Section */}
@@ -61,11 +65,11 @@ const EditMyProfilePage = () => {
             </h3>
 
             <div className="py-3">
-              <FXInput name="name" label="Name" type="text" />
+              <FXInput label="Name" name="name" type="text" />
             </div>
 
             <div className="py-3">
-              <FXInput name="phone" label="Phone Number" type="text" />
+              <FXInput label="Phone Number" name="phone" type="text" />
             </div>
           </div>
 
@@ -75,7 +79,7 @@ const EditMyProfilePage = () => {
               Bio
             </h3>
 
-            <FXTextarea name="bio" label="Tell us about yourself" />
+            <FXTextarea label="Tell us about yourself" name="bio" />
 
             <div className="py-3 ">
               <label
@@ -99,9 +103,9 @@ const EditMyProfilePage = () => {
         <div className="text-center">
           <Button
             className="my-3 w-full rounded-md bg-blue-600 text-white font-semibold transition-all duration-200 hover:bg-blue-700 disabled:bg-blue-300"
+            disabled={isPending}
             size="lg"
             type="submit"
-            disabled={isPending}
           >
             {isPending ? "Updating..." : "Update Profile"}
           </Button>

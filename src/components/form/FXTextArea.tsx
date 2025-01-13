@@ -16,8 +16,15 @@ export default function FXTextarea({
     register,
     formState: { errors },
   } = useFormContext();
-const currentValue = useWatch({name})
+  const currentValue = useWatch({ name });
+
   return (
-    <Textarea {...register(name)} label={label} minRows={6} variant={variant} value={currentValue || ""} />
+    <Textarea
+      {...register(name)}
+      label={label}
+      minRows={6}
+      value={currentValue || ""}
+      variant={variant}
+    />
   );
 }

@@ -1,7 +1,5 @@
 "use client";
 
-import UserProfileDetails from "@/src/components/UI/userDashboard/UserProfileDetails";
-import { useGetAuthUser } from "@/src/hooks/user.hook";
 import Link from "next/link";
 import {
   FaUsers,
@@ -9,6 +7,9 @@ import {
   FaChartPie,
   FaPlusCircle,
 } from "react-icons/fa"; // Importing icons
+
+import UserProfileDetails from "@/src/components/UI/userDashboard/UserProfileDetails";
+import { useGetAuthUser } from "@/src/hooks/user.hook";
 
 export default function UserDashboard() {
   const { data: user, isLoading, error } = useGetAuthUser();

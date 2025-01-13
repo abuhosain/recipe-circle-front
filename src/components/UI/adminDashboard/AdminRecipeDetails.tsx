@@ -1,7 +1,8 @@
-import { usePublishRecipe, useUnPublishRecipe } from "@/src/hooks/admin.hook";
-import { useDeleteRecipe } from "@/src/hooks/recipe.hook";
 import React from "react";
 import { toast } from "sonner";
+
+import { usePublishRecipe, useUnPublishRecipe } from "@/src/hooks/admin.hook";
+import { useDeleteRecipe } from "@/src/hooks/recipe.hook";
 
 // AdminRecipeDetails Component
 interface Recipe {
@@ -27,7 +28,8 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
   // Hooks for delete, publish, and unpublish operations
   const { mutate: deleteRecipe, isPending: isDeleting } = useDeleteRecipe();
   const { mutate: publishRecipe, isPending: isPublishing } = usePublishRecipe();
-  const { mutate: unPublishRecipe, isPending: isUnPublishing } = useUnPublishRecipe();
+  const { mutate: unPublishRecipe, isPending: isUnPublishing } =
+    useUnPublishRecipe();
 
   // Handle recipe deletion
   const handleDelete = async (id: string) => {
@@ -80,9 +82,9 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
       </h2>
       {firstImage && (
         <img
-          src={firstImage}
           alt={title}
           className="w-full h-48 object-cover rounded-md mb-4 transition-transform duration-300 transform hover:scale-105"
+          src={firstImage}
         />
       )}
       <p className="mt-2 text-gray-700 text-base">{description}</p>
@@ -93,6 +95,7 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
               ? "bg-red-600 hover:bg-red-700"
               : "bg-green-600 hover:bg-green-700"
           } transition duration-300`}
+          disabled={isPublishing || isUnPublishing} // Disable button while publishing/unpublishing
           onClick={() => {
             if (isPublishedState) {
               handleUnPublish(recipe._id); // Call unpublish if currently published
@@ -100,23 +103,22 @@ const AdminRecipeDetails: React.FC<AdminRecipeDetailsProps> = ({ recipe }) => {
               handlePublish(recipe._id); // Call publish if currently unpublished
             }
           }}
-          disabled={isPublishing || isUnPublishing} // Disable button while publishing/unpublishing
         >
           {isPublishing || isUnPublishing
             ? "Processing..."
             : isPublishedState
-            ? "Unpublish"
-            : "Publish"}
+              ? "Unpublish"
+              : "Publish"}
         </button>
         <button
           className={`bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ${
             isDeleting ? "opacity-50 cursor-not-allowed" : ""
           }`}
+          disabled={isDeleting} // Disable button while deleting
           onClick={() => {
             handleDelete(recipe._id);
             // Optionally, you can also remove the recipe from the UI here
           }}
-          disabled={isDeleting} // Disable button while deleting
         >
           {isDeleting ? "Deleting..." : "Delete"}
         </button>

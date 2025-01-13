@@ -1,10 +1,17 @@
+import { MdVerified } from "react-icons/md";
+import {
+  Avatar,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react"; // Import Badge component
+import { usePathname, useRouter } from "next/navigation";
+
 import { protectedRoutes } from "@/src/constant";
-import {  MdVerified } from "react-icons/md";
 import { useUser } from "@/src/context/user.provider";
 import { useGetAuthUser } from "@/src/hooks/user.hook";
 import { logOut } from "@/src/services/AuthService";
-import { Avatar,  Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"; // Import Badge component
-import { usePathname, useRouter } from "next/navigation";
 
 export default function NavbarDropdown() {
   const router = useRouter();
@@ -17,7 +24,7 @@ export default function NavbarDropdown() {
     userLoading(true);
 
     if (protectedRoutes.some((route: any) => pathname.match(route))) {
-      router.push("/");
+      router.push("/login");
     }
   };
 
@@ -29,10 +36,10 @@ export default function NavbarDropdown() {
     <Dropdown>
       <DropdownTrigger>
         <div className="flex items-center cursor-pointer relative">
-        {authUser?.data?.isPremium && (
+          {authUser?.data?.isPremium && (
             <MdVerified className="text-2xl bg-white rounded-full top-0 absolute text-blue-500 z-20 right-6 " />
           )}
-          <Avatar src={user?.profilePicture} />    
+          <Avatar src={user?.profilePicture} />
         </div>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">

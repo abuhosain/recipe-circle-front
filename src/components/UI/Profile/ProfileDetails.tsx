@@ -1,10 +1,11 @@
 "use client"; // This line indicates that this component will be rendered on the client side
 import React, { useState, useEffect } from "react";
-import { Avatar, Button, Link } from "@nextui-org/react";
-import { Author, IRecipe } from "@/src/types";
+import { Avatar, Button } from "@nextui-org/react";
+import { toast } from "sonner"; // Import sonner for notifications
+
 import RecipeCard from "../Recipe/RecipeCard";
 
-import { toast } from "sonner"; // Import sonner for notifications
+import { Author, IRecipe } from "@/src/types";
 import { useUser } from "@/src/context/user.provider";
 import { useAddFollow, useAddUnFollow } from "@/src/hooks/user.hook";
 
@@ -13,12 +14,13 @@ function ProfileDetails({ user, recipe }: { user: Author; recipe: IRecipe[] }) {
   const { mutate: followUser } = useAddFollow();
   const { mutate: unfollowUser } = useAddUnFollow();
   const { user: currentUser } = useUser();
-  console.log("user", user);
+
+  // console.log("user", user);
   // Check if the current user is following this profile's user using email
   useEffect(() => {
     if (currentUser?.email && user?.followers) {
       setIsFollowing(
-        user.followers.some((follower) => follower.email === currentUser.email)
+        user.followers.some((follower) => follower.email === currentUser.email),
       );
     }
   }, [currentUser, user.followers]);
@@ -27,6 +29,7 @@ function ProfileDetails({ user, recipe }: { user: Author; recipe: IRecipe[] }) {
   const handleFollowToggle = () => {
     if (!currentUser) {
       toast.error("You need to be logged in to follow users.");
+
       return;
     }
 
@@ -38,11 +41,11 @@ function ProfileDetails({ user, recipe }: { user: Author; recipe: IRecipe[] }) {
         {
           onSuccess: () => toast.success("Unfollowed successfully"),
           onError: (error) => {
-            console.log(error)
+            console.log(error);
             toast.error("Failed to unfollow the user. Please try again.");
             setIsFollowing(true); // Revert on error
           },
-        }
+        },
       );
     } else {
       followUser(
@@ -53,7 +56,7 @@ function ProfileDetails({ user, recipe }: { user: Author; recipe: IRecipe[] }) {
             toast.error("Failed to follow the user. Please try again.");
             setIsFollowing(false); // Revert on error
           },
-        }
+        },
       );
     }
   };
@@ -63,24 +66,23 @@ function ProfileDetails({ user, recipe }: { user: Author; recipe: IRecipe[] }) {
       {/* Profile Overview */}
       <div className="flex items-center mb-8">
         <Avatar
-          src={user?.profilePicture || "/default-avatar.png"} // Fallback if no profile picture
           alt={user?.name || "Unknown User"}
-          size="lg"
           className="mr-6"
+          size="lg"
+          src={user?.profilePicture || "/default-avatar.png"} // Fallback if no profile picture
         />
         <div>
           <h1 className="text-3xl font-bold">{user?.name || "Unnamed User"}</h1>
           <p className="text-gray-600">{user?.bio || "No bio available"}</p>
           {currentUser?.email !== user?.email && (
-          <Button
-            className={`mt-4 ${isFollowing ? "bg-red-600" : "bg-blue-600"}`}
-            size="sm"
-            onClick={handleFollowToggle}
-          >
-            {isFollowing ? "Unfollow" : "Follow"}
-          </Button>
-        )}
-
+            <Button
+              className={`mt-4 ${isFollowing ? "bg-red-600" : "bg-blue-600"}`}
+              size="sm"
+              onClick={handleFollowToggle}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </Button>
+          )}
         </div>
       </div>
 

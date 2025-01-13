@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
+import { Button } from "@nextui-org/react";
+import { useEffect, useState } from "react"; // Import useState and useEffect
+
 import { useUser } from "@/src/context/user.provider";
 import { useGetAllRecipe } from "@/src/hooks/recipe.hook";
 import { IRecipe } from "@/src/types";
-import Link from "next/link";
-import { Button } from "@nextui-org/react";
 import RecipeTable from "@/src/components/UI/userDashboard/RecipeTable";
-import { useEffect, useState } from "react"; // Import useState and useEffect
 
 const MyRecipesPage = () => {
   const { user } = useUser();
@@ -17,24 +18,27 @@ const MyRecipesPage = () => {
     if (data?.data?.recipes) {
       // Filter recipes based on the user's ID
       const filteredRecipes = data?.data?.recipes.filter((recipe: IRecipe) => {
-        const authorId = recipe?.author?._id; 
-        return authorId === user?.id; 
+        const authorId = recipe?.author?._id;
+
+        return authorId === user?.id;
       });
-      setRecipes(filteredRecipes || []);  
+
+      setRecipes(filteredRecipes || []);
     }
-  }, [data, user]);  
+  }, [data, user]);
+
   return (
     <div className="lg:ml-4">
       <h3 className="text-2xl font-bold mb-4 text-center">My Recipes</h3>
-      <Link href="/user/create-recipe" className="flex justify-end">
-        <Button color="success" className="mb-4">
+      <Link className="flex justify-end" href="/user/create-recipe">
+        <Button className="mb-4" color="success">
           Create Recipe
         </Button>
       </Link>
       <RecipeTable
+        isLoading={isPending}
         recipes={recipes} // Pass the recipes from state
         setRecipes={setRecipes} // Pass the setRecipes function
-        isLoading={isPending}
       />
     </div>
   );

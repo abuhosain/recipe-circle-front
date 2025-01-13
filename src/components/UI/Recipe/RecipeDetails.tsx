@@ -1,15 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import { IRecipe, IUser } from "@/src/types";
+import { toast } from "sonner";
+
 import ImageGallery from "./ImageGallery";
+
 import "@smastrom/react-rating/style.css";
 
 import { Link } from "@nextui-org/react";
-import { useVote } from "@/src/hooks/recipe.hook";
+
 import VoteComponent from "./RecipeVote";
 import RecipeRating from "./RecipeRating";
 import CommentSection from "./RecipeComment";
-import { toast } from "sonner";
+
+import { useVote } from "@/src/hooks/recipe.hook";
+import { IRecipe, IUser } from "@/src/types";
 
 interface IProps {
   recipe: IRecipe;
@@ -17,7 +21,7 @@ interface IProps {
 }
 
 export default function RecipeDetails({ recipe, user }: IProps) {
-  console.log(recipe)
+  console.log(recipe);
   const [totalVotes, setTotalVotes] = useState(recipe?.voteScore || 0);
 
   // Use the custom mutation hook for voting
@@ -30,7 +34,7 @@ export default function RecipeDetails({ recipe, user }: IProps) {
   useEffect(() => {
     if (data && !data.success) {
       toast.error(data?.message);
-    }else if(data && data?.success){
+    } else if (data && data?.success) {
       toast.success("Vote submited done");
     }
   }, [data]);
@@ -75,9 +79,9 @@ export default function RecipeDetails({ recipe, user }: IProps) {
         {/* Vote */}
         <div className="mt-3">
           <VoteComponent
+            initialTotalVotes={totalVotes}
             initialVote={0}
             onVote={handleVote}
-            initialTotalVotes={totalVotes}
           />
         </div>
       </div>
@@ -87,7 +91,7 @@ export default function RecipeDetails({ recipe, user }: IProps) {
         <div className="border rounded-md w-full  relative   mt-12 p-4">
           <div className="text-center">
             <h3 className="font-bold text-2xl">
-              Hi, I'm {recipe?.author?.name}
+              Hi, I am {recipe?.author?.name}
             </h3>
             <h2 className="text-md">
               A culinary enthusiast with a love for creating delicious and
@@ -109,8 +113,8 @@ export default function RecipeDetails({ recipe, user }: IProps) {
         <div>
           <CommentSection
             key={recipe?._id}
-            recipe={recipe}
             currentUser={user}
+            recipe={recipe}
           />
         </div>
       </div>

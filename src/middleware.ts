@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
+
 import { getCurrentUser } from "./services/AuthService";
 
 // Define protected routes (including home page '/')
@@ -10,7 +11,7 @@ const protectedRoutes = [
   "/membership",
   "/user/:page*",
   "/admin/:page*",
-  "/"
+  "/",
 ];
 
 export async function middleware(request: NextRequest) {
@@ -24,7 +25,7 @@ export async function middleware(request: NextRequest) {
     // Redirect to login if trying to access a protected route, including the home page
     if (protectedRoutes.some((route) => pathname.match(route))) {
       return NextResponse.redirect(
-        new URL(`/login?redirect=${pathname}`, request.url)
+        new URL(`/login?redirect=${pathname}`, request.url),
       );
     }
   } else {
@@ -46,6 +47,6 @@ export const config = {
     "/membership",
     "/user/:page*",
     "/admin/:page*",
-    "/" // Match the home page as well
+    "/",
   ],
 };

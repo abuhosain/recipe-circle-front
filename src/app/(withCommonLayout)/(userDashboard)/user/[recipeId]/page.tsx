@@ -1,15 +1,7 @@
 "use client";
-import FXInput from "@/src/components/form/FXInput";
-import Loading from "@/src/components/UI/Loading";
-import {
-  useGetRecipesByUserId,
-  useGetSingleRecipe,
-  useUpdateRecipe,
-} from "@/src/hooks/recipe.hook";
 import { Button } from "@nextui-org/button";
 import { Plus, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-
 import { ChangeEvent, useEffect, useState } from "react";
 import {
   FieldValues,
@@ -18,6 +10,10 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
+
+import { useGetSingleRecipe, useUpdateRecipe } from "@/src/hooks/recipe.hook";
+import Loading from "@/src/components/UI/Loading";
+import FXInput from "@/src/components/form/FXInput";
 
 const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -37,7 +33,6 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
     isPending: singleRecipePending,
     isSuccess: isSuccessRecipe,
   } = useGetSingleRecipe(params?.recipeId);
-   
 
   // This effect will run when the recipe data is fetched
   useEffect(() => {
@@ -51,7 +46,7 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
         isPublished: getSingleRecipe.isPublished || false,
         ingredients:
           getSingleRecipe?.ingredients?.map(
-            (ingredient: { value: string }) => ({ value: ingredient?.value })
+            (ingredient: { value: string }) => ({ value: ingredient?.value }),
           ) || [],
       });
       setImagePreviews(getSingleRecipe.imageUrls || []); // Assuming `imageUrls` is part of the recipe data
@@ -70,7 +65,7 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
       ...data,
       cookingTime: Number(data?.cookingTime),
       ingredients: data?.ingredients?.map(
-        (ingre: { value: string }) => ingre.value
+        (ingre: { value: string }) => ingre.value,
       ),
     };
 
@@ -89,10 +84,12 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files![0];
+
     setImageFiles((prev) => [...prev, files]);
 
     if (files) {
       const reader = new FileReader();
+
       reader.onloadend = () => {
         setImagePreviews((prev) => [...prev, reader.result as string]);
       };
@@ -119,14 +116,14 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Title */}
               <div className="mb-6">
-                <FXInput name="title" label="Recipe Title" type="text" />
+                <FXInput label="Recipe Title" name="title" type="text" />
               </div>
 
               {/* Description */}
               <div className="mb-6">
                 <FXInput
-                  name="description"
                   label="Recipe Description"
+                  name="description"
                   type="textarea"
                 />
               </div>
@@ -157,9 +154,9 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
                       className="w-24 h-24 rounded-lg overflow-hidden border-2 border-gray-300 dark:border-gray-600 p-2"
                     >
                       <img
+                        alt="preview"
                         className="object-cover w-full h-full"
                         src={url}
-                        alt="preview"
                       />
                     </div>
                   ))}
@@ -173,8 +170,8 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
                   </h1>
                   <Button
                     isIconOnly
-                    onClick={() => handleFieldAppend()}
                     className="bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                    onClick={() => handleFieldAppend()}
                   >
                     <Plus className="text-white" />
                   </Button>
@@ -202,8 +199,8 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
               {/* Cooking Time */}
               <div className="mb-6">
                 <FXInput
-                  name="cookingTime"
                   label="Cooking Time (Minutes)"
+                  name="cookingTime"
                   type="number"
                 />
               </div>
@@ -211,15 +208,14 @@ const RecipeForm = ({ params }: { params: { recipeId: string } }) => {
               {/* Is Premium */}
               <div className="mb-6 flex items-center">
                 <input
-                  type="checkbox"
                   className="form-checkbox text-indigo-600 dark:text-indigo-400"
                   name="isPremium"
+                  type="checkbox"
                 />
                 <label className="ml-2 text-gray-700 dark:text-gray-300 font-medium">
                   Premium Recipe
                 </label>
               </div>
-
 
               {/* Submit Button */}
               <Button

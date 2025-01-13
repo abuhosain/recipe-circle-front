@@ -1,8 +1,4 @@
 "use client";
-import RcInput from "@/src/components/form/RcInput";
-import Loading from "@/src/components/UI/Loading";
-import { useUser } from "@/src/context/user.provider";
-import { useCreateRecipe } from "@/src/hooks/recipe.hook";
 import { Button } from "@nextui-org/button";
 import { Plus, TrashIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -14,6 +10,11 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
+
+import { useCreateRecipe } from "@/src/hooks/recipe.hook";
+import { useUser } from "@/src/context/user.provider";
+import Loading from "@/src/components/UI/Loading";
+import RcInput from "@/src/components/form/RcInput";
 
 const RecipeForm = () => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -67,7 +68,7 @@ const RecipeForm = () => {
 
       handleCreateRecipe(formData);
     },
-    [handleCreateRecipe, imageFiles, user?.id]
+    [handleCreateRecipe, imageFiles, user?.id],
   );
 
   const handleFieldAppend = useCallback(() => {
@@ -80,14 +81,17 @@ const RecipeForm = () => {
 
   const handleImageChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+
     if (files && files.length > 0) {
       const validFiles: File[] = [];
       const validPreviews: string[] = [];
+
       Array.from(files).forEach((file) => {
         if (file.type.startsWith("image/") && file.size < 5000000) {
           // Limit to 5MB
           validFiles.push(file);
           const reader = new FileReader();
+
           reader.onloadend = () => {
             if (reader.result) {
               validPreviews.push(reader.result as string);
@@ -122,43 +126,43 @@ const RecipeForm = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Title */}
               <div className="mb-6">
-                <RcInput name="title" label="Recipe Title" required />
+                <RcInput required label="Recipe Title" name="title" />
               </div>
 
               {/* Description */}
               <div className="mb-6">
                 <RcInput
-                  name="description"
-                  label="Recipe Description"
-                  type="textarea"
                   required
+                  label="Recipe Description"
+                  name="description"
+                  type="textarea"
                 />
               </div>
               {/* instructions */}
               <div className="mb-6">
                 <RcInput
-                  name="instructions"
-                  label="Recipe Instructions"
-                  type="textarea"
                   required
+                  label="Recipe Instructions"
+                  name="instructions"
+                  type="textarea"
                 />
               </div>
 
               {/* Cooking Time */}
               <div className="mb-6">
                 <RcInput
-                  name="cookingTime"
-                  label="Cooking Time (Minutes)"
-                  type="number"
                   required
+                  label="Cooking Time (Minutes)"
+                  name="cookingTime"
+                  type="number"
                 />
               </div>
 
               {/* Is Premium */}
               <div className="mb-6 flex items-center">
                 <input
-                  type="checkbox"
                   className="form-checkbox text-indigo-600 dark:text-indigo-400"
+                  type="checkbox"
                   {...methods.register("isPremium")}
                 />
                 <label className="ml-2 text-gray-700 dark:text-gray-300 font-medium">
@@ -191,9 +195,9 @@ const RecipeForm = () => {
                     className="w-24 h-24 rounded-lg overflow-hidden border-2 border-gray-300 dark:border-gray-600 p-2"
                   >
                     <img
+                      alt={`preview-${index}`}
                       className="object-cover w-full h-full"
                       src={url}
-                      alt={`preview-${index}`}
                     />
                   </div>
                 ))}
@@ -207,8 +211,8 @@ const RecipeForm = () => {
                   </h1>
                   <Button
                     isIconOnly
-                    onClick={handleFieldAppend}
                     className="bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                    onClick={handleFieldAppend}
                   >
                     <Plus className="text-white" />
                   </Button>
@@ -218,9 +222,9 @@ const RecipeForm = () => {
                   {ingredientFields.map((field, index) => (
                     <div key={field.id} className="flex items-center gap-3">
                       <RcInput
+                        required
                         label="Ingredient"
                         name={`ingredients.${index}.name`}
-                        required
                       />
                       <Button
                         isIconOnly
@@ -242,8 +246,8 @@ const RecipeForm = () => {
                   </h1>
                   <Button
                     isIconOnly
-                    onClick={handleTagAppend}
                     className="bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                    onClick={handleTagAppend}
                   >
                     <Plus className="text-white" />
                   </Button>
@@ -253,9 +257,9 @@ const RecipeForm = () => {
                   {tagFields.map((field, index) => (
                     <div key={field.id} className="flex items-center gap-3">
                       <RcInput
+                        required
                         label="Tag"
                         name={`tags.${index}.value`}
-                        required
                       />
                       <Button
                         isIconOnly
@@ -273,8 +277,8 @@ const RecipeForm = () => {
               <div className="flex justify-center">
                 <Button
                   className="w-full py-3 bg-green-500 hover:bg-green-600 text-white text-lg rounded-lg shadow-md dark:bg-green-600 dark:hover:bg-green-700"
-                  type="submit"
                   isDisabled={createRecipePending}
+                  type="submit"
                 >
                   {createRecipePending ? "Submitting..." : "Create Recipe"}
                 </Button>

@@ -1,10 +1,4 @@
 "use client";
-import FXForm from "@/src/components/form/FXForm";
-import FXInput from "@/src/components/form/FXInput";
-import Loading from "@/src/components/UI/Loading";
-import { useUser } from "@/src/context/user.provider";
-import { useUserLogin } from "@/src/hooks/auth.hook";
-import loginValidationSchema from "@/src/schemas/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
@@ -12,6 +6,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
+
+import loginValidationSchema from "@/src/schemas/login.schema";
+import { useUserLogin } from "@/src/hooks/auth.hook";
+import { useUser } from "@/src/context/user.provider";
+import Loading from "@/src/components/UI/Loading";
+import FXInput from "@/src/components/form/FXInput";
+import FXForm from "@/src/components/form/FXForm";
 
 function Login() {
   const { setIsLoading: userLoading } = useUser();
@@ -51,14 +52,14 @@ function Login() {
         <p className="mb-4">Welcome Back! Let&lsquo;s Get Started</p>
         <div className="w-[35%]">
           <FXForm
-            onSubmit={onSubmit}
             resolver={zodResolver(loginValidationSchema)}
+            onSubmit={onSubmit}
           >
             <div className="py-3">
-              <FXInput name="email" label="Email" type="email" />
+              <FXInput label="Email" name="email" type="email" />
             </div>
             <div className="py-3">
-              <FXInput name="password" label="Password" type="password" />
+              <FXInput label="Password" name="password" type="password" />
             </div>
 
             <Button
@@ -71,15 +72,15 @@ function Login() {
           </FXForm>
           <div className="flex justify-between items-center py-2">
             <Link
-              href="/forgot-password"
               className="text-sm text-blue-500 hover:underline"
+              href="/forgot-password"
             >
               Forgot Password?
             </Link>
           </div>
           <div className="text-center">
             Don&lsquo;t have an account?{" "}
-            <Link href="/register" className="text-blue-500 hover:underline">
+            <Link className="text-blue-500 hover:underline" href="/register">
               Register
             </Link>
           </div>

@@ -1,11 +1,12 @@
 "use client";
 
+import { toast } from "sonner";
+
 import {
   useBlockUser,
   useDeleteUser,
   useUnBlockUser,
 } from "@/src/hooks/admin.hook";
-import { toast } from "sonner";
 
 interface User {
   _id: string;
@@ -45,6 +46,7 @@ const UserTable = ({ user, isLoading, onDelete, onUpdate }: UserTableProps) => {
   // Handle Block/Unblock User
   const handleBlockToggle = async (id: string, isBlocked: boolean) => {
     const action = isBlocked ? "unblock" : "block"; // Define action based on the current status
+
     if (confirm(`Are you sure you want to ${action} this user?`)) {
       try {
         if (isBlocked) {
@@ -56,6 +58,7 @@ const UserTable = ({ user, isLoading, onDelete, onUpdate }: UserTableProps) => {
 
         // Update user state optimistically
         const updatedUser = { ...user, isBlocked: !isBlocked };
+
         onUpdate(updatedUser); // Call the parent callback to update the user status in the UI
       } catch (error) {
         console.error(error); // Log the error
@@ -87,22 +90,24 @@ const UserTable = ({ user, isLoading, onDelete, onUpdate }: UserTableProps) => {
                   className={`${
                     isBlocked ? "bg-green-500" : "bg-yellow-500"
                   } text-white font-medium py-2 px-4 rounded-md transition duration-200 ease-in-out hover:opacity-90 ${
-                    isBlocking || isUnblocking ? "opacity-50 cursor-not-allowed" : ""
+                    isBlocking || isUnblocking
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
-                  onClick={() => handleBlockToggle(_id, isBlocked)}
                   disabled={isBlocking || isUnblocking} // Disable button while blocking/unblocking
+                  onClick={() => handleBlockToggle(_id, isBlocked)}
                 >
                   {isBlocking || isUnblocking
                     ? "Processing..."
                     : isBlocked
-                    ? "Unblock"
-                    : "Block"}
+                      ? "Unblock"
+                      : "Block"}
                 </button>
 
                 <button
                   className={`bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ${isDeleting ? "opacity-50 cursor-not-allowed" : ""}`}
-                  onClick={() => handleDelete(_id)}
                   disabled={isDeleting} // Disable button while deleting
+                  onClick={() => handleDelete(_id)}
                 >
                   {isDeleting ? "Deleting..." : "Delete"}
                 </button>

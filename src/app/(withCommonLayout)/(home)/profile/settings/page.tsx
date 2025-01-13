@@ -1,17 +1,17 @@
 "use client";
 
-import Loading from "@/src/components/UI/Loading";
 import { Button } from "@nextui-org/button";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { Input } from "@nextui-org/input";
- 
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import Loading from "@/src/components/UI/Loading";
 import { useUser } from "@/src/context/user.provider";
 import { useChangePassword } from "@/src/hooks/auth.hook";
 import FXForm from "@/src/components/form/FXForm";
 import { changePasswordValidationSchema } from "@/src/schemas/login.schema";
 import FXInput from "@/src/components/form/FXInput";
- 
+
 const Settings = () => {
   const { user } = useUser();
   const { mutate: handlePasswordChange, isPending } = useChangePassword();
@@ -32,16 +32,16 @@ const Settings = () => {
             <h3 className="text-lg font-semibold">Account Preferences</h3>
             <div className="py-3">
               <Input
-                name="username"
                 label="Username"
+                name="username"
                 type="text"
                 value={user?.userName}
               />
             </div>
             <div className="py-3">
               <Input
-                name="language"
                 label="Preferred Language"
+                name="language"
                 type="text"
                 value="English"
               />
@@ -50,22 +50,22 @@ const Settings = () => {
 
           {/* Security Settings Section */}
           <FXForm
-            onSubmit={onSubmit}
             resolver={zodResolver(changePasswordValidationSchema)}
+            onSubmit={onSubmit}
           >
             <div className="mb-6">
               <h3 className="text-lg font-semibold">Security Settings</h3>
               <div className="py-3">
                 <FXInput
-                  name="oldPassword"
                   label="Current Password"
+                  name="oldPassword"
                   type="password"
                 />
               </div>
               <div className="py-3">
                 <FXInput
-                  name="newPassword"
                   label="New Password"
+                  name="newPassword"
                   type="password"
                 />
               </div>
@@ -77,9 +77,9 @@ const Settings = () => {
               <div className="py-3">
                 <label className="inline-flex items-center">
                   <input
-                    type="checkbox"
                     className="form-checkbox text-indigo-600"
                     name="emailNotifications"
+                    type="checkbox"
                   />
                   <span className="ml-2">Email Notifications</span>
                 </label>
@@ -87,9 +87,9 @@ const Settings = () => {
               <div className="py-3">
                 <label className="inline-flex items-center">
                   <input
-                    type="checkbox"
                     className="form-checkbox text-indigo-600"
                     name="smsNotifications"
+                    type="checkbox"
                   />
                   <span className="ml-2">SMS Notifications</span>
                 </label>

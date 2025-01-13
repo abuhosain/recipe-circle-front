@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Loading from "@/src/components/UI/Loading";
 import { usePurcaseSubscriptions } from "@/src/hooks/premium.hook"; // Ensure the hook name is correct
-import { useEffect, useState } from "react";
 
 // Define types for the plan object
 interface Plan {
@@ -32,7 +33,7 @@ const MembershipPlans = () => {
     if (!isPending && data?.data?.payment_url && isSuccess) {
       window.location.href = data?.data?.payment_url;
     } else if (isError) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   }, [isPending, data, isSuccess, isError, error]);
 
@@ -57,7 +58,8 @@ const MembershipPlans = () => {
 
   const handlePayment = () => {
     if (selectedPlan) {
-      const subscriptionDuration = selectedPlan.title === "Monthly Plan" ? 1 : 12;
+      const subscriptionDuration =
+        selectedPlan.title === "Monthly Plan" ? 1 : 12;
       const totalPrice = Number(selectedPlan.price);
 
       const membershipPlan: MembershipPlan = {
@@ -119,13 +121,13 @@ const MembershipPlans = () => {
         {selectedPlan && (
           <div className="mt-14 w-full max-w-md">
             <button
-              onClick={handlePayment}
-              disabled={isPending}
               className={`w-full py-4 ${
                 isPending
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-gradient-to-r from-indigo-600 to-indigo-800"
               } text-white rounded-md text-lg font-semibold hover:bg-indigo-700 transition-all duration-300 ease-in-out`}
+              disabled={isPending}
+              onClick={handlePayment}
             >
               {isPending
                 ? "Processing Payment..."

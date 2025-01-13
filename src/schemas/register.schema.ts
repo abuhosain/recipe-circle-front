@@ -9,7 +9,7 @@ const registerValidationSchema = z.object({
     .string()
     .min(10, "Phone number must be at least 10 digits.")
     .regex(/^\d+$/, "Phone number must contain only digits."),
-    username : z.string()
+  username: z.string(),
 });
 
 export default registerValidationSchema;

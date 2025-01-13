@@ -1,11 +1,12 @@
 "use client";
 
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
+
 import Loading from "@/src/components/UI/Loading";
 import { useForgotPassword } from "@/src/hooks/auth.hook";
 import { useUser } from "@/src/context/user.provider";
@@ -48,11 +49,11 @@ const ForgotPassword = () => {
 
         <div className="w-full max-w-md">
           <FXForm
-            onSubmit={onSubmit}
             resolver={zodResolver(forgotPasswordValidationSchema)}
+            onSubmit={onSubmit}
           >
             <div className="py-4">
-              <FXInput name="email" label="Email" type="email" />
+              <FXInput label="Email" name="email" type="email" />
             </div>
 
             <Button
@@ -66,7 +67,7 @@ const ForgotPassword = () => {
 
           <div className="text-center mt-4">
             Remember your password?{" "}
-            <Link href="/login" className="text-blue-500 hover:underline">
+            <Link className="text-blue-500 hover:underline" href="/login">
               Login
             </Link>
           </div>

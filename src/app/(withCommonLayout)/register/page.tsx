@@ -1,11 +1,5 @@
 "use client";
 
-import FXForm from "@/src/components/form/FXForm";
-import FXInput from "@/src/components/form/FXInput";
-import Loading from "@/src/components/UI/Loading";
-import { useUserRegistration } from "@/src/hooks/auth.hook";
-import registerValidationSchema from "@/src/schemas/register.schema";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
 import Link from "next/link";
@@ -14,6 +8,12 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 
+import registerValidationSchema from "@/src/schemas/register.schema";
+import { useUserRegistration } from "@/src/hooks/auth.hook";
+import Loading from "@/src/components/UI/Loading";
+import FXInput from "@/src/components/form/FXInput";
+import FXForm from "@/src/components/form/FXForm";
+
 export default function RegisterPage() {
   const router = useRouter();
   const [imageFiles, setImageFiles] = useState<File | null>(null);
@@ -21,11 +21,12 @@ export default function RegisterPage() {
     mutate: handleUserRegistration,
     isPending,
     isSuccess,
-    data
+    data,
   } = useUserRegistration();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     const formData = new FormData();
+
     if (imageFiles !== null) {
       formData.append("file", imageFiles);
       formData.append("data", JSON.stringify(data));
@@ -38,21 +39,19 @@ export default function RegisterPage() {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files![0];
+
     setImageFiles(files);
   };
 
   useEffect(() => {
     if (data && !data?.success) {
-        toast.error(data?.message as string);
+      toast.error(data?.message as string);
     }
     if (data && data?.success) {
-        toast.success("User created succesfully");
-        router.push("/");
+      toast.success("User created succesfully");
+      router.push("/");
     }
-
-}, [data])
-
-  
+  }, [data]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import { Button, Tooltip } from "@nextui-org/react";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
@@ -27,6 +27,7 @@ export default function VoteComponent({
     } else {
       // If the user is upvoting or changing from a downvote
       const voteDifference = vote === -1 ? 2 : 1; // +1 for upvote, +2 if switching from downvote
+
       setVote(1);
       setTotalVotes(totalVotes + voteDifference);
       onVote(1); // Pass 1 to API
@@ -43,6 +44,7 @@ export default function VoteComponent({
     } else {
       // If the user is downvoting or changing from an upvote
       const voteDifference = vote === 1 ? -2 : -1; // -1 for downvote, -2 if switching from upvote
+
       setVote(-1);
       setTotalVotes(totalVotes + voteDifference);
       onVote(-1); // Pass -1 to API
@@ -59,10 +61,9 @@ export default function VoteComponent({
       {/* Upvote button */}
       <Tooltip content={vote === 1 ? "Remove Upvote" : "Upvote"}>
         <Button
-          
+          className="hover:text-green-500 transition-colors"
           color={vote === 1 ? "primary" : "default"}
           onClick={handleUpvote}
-          className="hover:text-green-500 transition-colors"
         >
           <FaThumbsUp size={20} />
         </Button>
@@ -71,10 +72,9 @@ export default function VoteComponent({
       {/* Downvote button */}
       <Tooltip content={vote === -1 ? "Remove Downvote" : "Downvote"}>
         <Button
-          
+          className="hover:text-red-500 transition-colors"
           color={vote === -1 ? "danger" : "default"}
           onClick={handleDownvote}
-          className="hover:text-red-500 transition-colors"
         >
           <FaThumbsDown size={20} />
         </Button>

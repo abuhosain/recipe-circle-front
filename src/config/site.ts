@@ -9,6 +9,10 @@ export const siteConfig = {
       href: "/",
     },
     {
+      label: "Add Friend",
+      href: "/friend",
+    },
+    {
       label: "About",
       href: "/about",
     },
@@ -29,6 +33,10 @@ export const siteConfig = {
     {
       label: "Contact",
       href: "/contact",
+    },
+    {
+      label: "Add Friend",
+      href: "/friend",
     },
   ],
 };

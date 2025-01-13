@@ -1,24 +1,30 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/button";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+
 import FXForm from "@/src/components/form/FXForm";
 import FXInput from "@/src/components/form/FXInput";
 import Loading from "@/src/components/UI/Loading";
 import { useUserRegistration } from "@/src/hooks/auth.hook";
 import registerValidationSchema from "@/src/schemas/register.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
-import { FieldValues, SubmitHandler } from "react-hook-form";
 
 export default function Register() {
-  const { mutate: handleRegistration, isPending, isError, error } = useUserRegistration();
+  const {
+    mutate: handleRegistration,
+    isPending,
+    isError,
+    error,
+  } = useUserRegistration();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const userData = {
       ...data,
-      role : "admin",
+      role: "admin",
       profilePhoto:
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
     };
+
     // console.log("Inside form user data: ", userData);
     handleRegistration(userData);
   };
@@ -31,23 +37,23 @@ export default function Register() {
         <p className="mb-4">Join us and start creating delicious recipes!</p>
         <div className="w-[35%]">
           <FXForm
-            onSubmit={onSubmit}
             resolver={zodResolver(registerValidationSchema)}
+            onSubmit={onSubmit}
           >
             <div className="py-3">
-              <FXInput name="name" label="Name" type="text" />
+              <FXInput label="Name" name="name" type="text" />
             </div>
             <div className="py-3">
-              <FXInput name="email" label="Email" type="email" />
+              <FXInput label="Email" name="email" type="email" />
             </div>
             <div className="py-3">
-              <FXInput name="password" label="Password" type="password" />
+              <FXInput label="Password" name="password" type="password" />
             </div>
             <div className="py-3">
-              <FXInput name="phone" label="Phone" type="text" />
+              <FXInput label="Phone" name="phone" type="text" />
             </div>
             <div className="py-3">
-              <FXInput name="username" label="Username" type="text" />
+              <FXInput label="Username" name="username" type="text" />
             </div>
 
             <Button
@@ -58,7 +64,6 @@ export default function Register() {
               Register
             </Button>
           </FXForm>
-         
 
           {isError && (
             <div className="mt-4 text-red-500">

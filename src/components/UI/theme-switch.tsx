@@ -43,12 +43,9 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     onChange,
   });
 
-
-
   return (
     //@ts-ignore
     <Component
-
       {...getBaseProps({
         className: clsx(
           "px-px transition-opacity hover:opacity-80 cursor-pointer",

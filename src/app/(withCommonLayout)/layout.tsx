@@ -1,6 +1,7 @@
-'use client'
-import { Navbar } from "@/src/components/UI/navbar";
+"use client";
 import React, { ReactNode } from "react";
+
+import { Navbar } from "@/src/components/UI/navbar";
 
 export default function layout({ children }: { children: ReactNode }) {
   return (

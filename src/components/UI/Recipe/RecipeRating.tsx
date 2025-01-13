@@ -1,15 +1,14 @@
 // components/RecipeRating.tsx
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Rating } from '@smastrom/react-rating';
-import '@smastrom/react-rating/style.css';
-import { Button } from '@nextui-org/react'; // Using NextUI for additional UI elements
-import Loading from '../Loading';
- 
-import { toast } from 'react-toastify'; // Ensure to import toast for notifications
-import { useRating } from '@/src/hooks/recipe.hook';
- 
+import React, { useEffect, useState } from "react";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
+import { Button } from "@nextui-org/react"; // Using NextUI for additional UI elements
+import { toast } from "react-toastify"; // Ensure to import toast for notifications
+
+import { useRating } from "@/src/hooks/recipe.hook"; // Custom hook
+
 interface RatingType {
   user: string;
   rating: number;
@@ -29,7 +28,7 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
   const [averageRating, setAverageRating] = useState<number>(0);
   const [userRating, setUserRating] = useState<number>(0);
   const [totalVotes, setTotalVotes] = useState<number>(0); // Total votes state
-  const { mutate: submitRating,  } = useRating(); // Use the custom hook
+  const { mutate: submitRating } = useRating(); // Use the custom hook
 
   // Calculate the average rating when the component mounts or when the recipe prop changes
   useEffect(() => {
@@ -37,9 +36,10 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
       const totalRatings = recipe.ratings.length;
       const sumOfRatings = recipe.ratings.reduce(
         (sum: number, rating: RatingType) => sum + rating.rating,
-        0
+        0,
       );
       const avgRating = sumOfRatings / totalRatings;
+
       setAverageRating(avgRating);
       setTotalVotes(totalRatings); // Set total votes based on the number of ratings
     } else {
@@ -51,7 +51,6 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
   // Handle rating submission using the new voting structure
   const handleVote = (voteValue: number) => {
     if (voteValue < 1 || voteValue > 5) {
-      console.error("Invalid vote value. It should be between 1 and 5.");
       return;
     }
 
@@ -62,16 +61,18 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
           // Update the local average rating and total votes after successful mutation
           setTotalVotes((prevVotes) => prevVotes + 1); // Increment total votes
           // Update average rating if necessary (recalculate here)
-          const newAverageRating = (averageRating * totalVotes + voteValue) / (totalVotes + 1);
+          const newAverageRating =
+            (averageRating * totalVotes + voteValue) / (totalVotes + 1);
+
           setAverageRating(newAverageRating); // Set the new average rating
           setUserRating(0); // Reset user rating after submission
           toast.success("Rating submitted successfully!");
         },
         onError: (error) => {
-          console.error("Error submitting vote:", error);
+          // console.error("Error submitting vote:", error);
           toast.error(error.message || "Failed to submit Rating");
         },
-      }
+      },
     );
   };
 
@@ -82,27 +83,29 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
 
       {/* Average Rating Display */}
       <div className="average-rating-section">
-        <Rating value={averageRating} readOnly style={{ maxWidth: 100 }} />
-        <p className="average-rating-text">Average Rating: {averageRating.toFixed(1)} / 5</p>
-        <p className="total-votes-text">Total: {totalVotes}</p> {/* Display total votes */}
+        <Rating readOnly style={{ maxWidth: 100 }} value={averageRating} />
+        <p className="average-rating-text">
+          Average Rating: {averageRating.toFixed(1)} / 5
+        </p>
+        <p className="total-votes-text">Total: {totalVotes}</p>{" "}
+        {/* Display total votes */}
       </div>
 
       {/* Submit Your Rating */}
       <div className="submit-rating-section">
         <h3>Submit Your Rating</h3>
         <Rating
+          style={{ maxWidth: 100 }}
           value={userRating}
           onChange={(newValue: number) => setUserRating(newValue)}
-          style={{ maxWidth: 100 }}
         />
         <Button
-          color="primary"
-          
           className="submit-button"
-          disabled={userRating === 0 } // Disable button until a rating is selected or during loading
+          color="primary"
+          disabled={userRating === 0} // Disable button until a rating is selected or during loading
           onClick={() => handleVote(userRating)} // Call handleVote with userRating
         >
-          { 'Submit Rating'}
+          {"Submit Rating"}
         </Button>
       </div>
 
@@ -112,7 +115,7 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
       </div>
 
       {/* Styles */}
-      <style jsx>{`
+      <style>{`
         .recipe-rating-container {
           border: 1px solid #eaeaea;
           border-radius: 8px;
@@ -120,14 +123,12 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
           max-width: 500px;
           margin: 0 auto;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          
         }
 
         .recipe-title {
           text-align: center;
           font-size: 24px;
           margin-bottom: 20px;
-          
         }
 
         .average-rating-section {
@@ -140,12 +141,10 @@ const RecipeRating: React.FC<RecipeRatingProps> = ({ recipe }) => {
 
         .average-rating-text {
           font-size: 18px;
-          
         }
 
         .total-votes-text {
           font-size: 16px;
-          
         }
 
         .submit-rating-section {
