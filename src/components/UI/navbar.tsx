@@ -96,7 +96,7 @@ export const Navbar = () => {
               as={Link}
               className="font-semibold px-4 py-2 rounded-lg"
               color="primary"
-              href="/signup"
+              href="/register"
               variant="solid"
             >
               Sign Up
@@ -150,7 +150,7 @@ export const Navbar = () => {
                 as={Link}
                 className="w-full font-semibold px-4 py-2 rounded-lg"
                 color="primary"
-                href="/signup"
+                href="/register"
                 variant="solid"
               >
                 Sign Up

@@ -72,7 +72,7 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className="flex-1 flex flex-col  ">
         {/* Header (Mobile) */}
         {/* <header className="lg:hidden flex items-center justify-between bg-white dark:bg-gray-800 px-6 py-4 shadow-md">
           <h1 className="text-xl font-bold">Dashboard</h1>
@@ -82,8 +82,8 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
         </header> */}
 
         {/* Page Content */}
-        <main className="flex-1 p-6">
-          <div className="mx-auto dark:bg-gray-800 h-full p-6">{children}</div>
+        <main className="">
+          <div className="mx-auto dark:bg-gray-800 h-full ">{children}</div>
         </main>
 
         {/* Footer */}
