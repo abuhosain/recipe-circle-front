@@ -1,9 +1,17 @@
+ 
 "use client";
+import {
+  FaHome,
+   
+  FaUserEdit,
+  FaBook,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa"; // Importing from Font Awesome
 
 import { useState } from "react";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { FaHome, FaUserEdit, FaBook, FaBars, FaTimes } from "react-icons/fa"; // Importing from Font Awesome
 
 const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -12,78 +20,73 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // Define navigation links
+  const navLinks = [
+    { href: "/", label: "Home", icon: <FaHome /> },
+    { href: "/admin/manage-recipes", label: "Manage Recipes", icon: <FaBook /> },
+    { href: "/admin/manage-users", label: "Manage Users", icon: <FaUserEdit /> },
+    { href: "/admin/create-admin", label: "Create Admin", icon: <FaUserEdit /> }
+  ];
+  
+
   return (
-    <div className="flex h-screen">
-      {/* Side Navigation Bar */}
+    <div className="flex h-screen text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 md:mt-14 z-50 left-0 bg-white shadow-lg w-64 lg:w-72 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-white dark:bg-gray-800 shadow-lg transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0`}
       >
-        <div className="h-full flex flex-col justify-between p-6 lg:p-8">
-          <div>
-            {/* Navigation Links */}
-            <nav className="space-y-8 lg:space-y-12">
-              <Link href="/">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaHome className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="ml-3 hidden lg:block">Home</span>
-                </p>
-              </Link>
-              <Link href="/admin/manage-recipes">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaBook className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="hidden ml-3 lg:block">Manage Recipes</span>
-                </p>
-              </Link>
-              <Link href="/admin/manage-users">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="ml-3 hidden lg:block">Manage Users</span>
-                </p>
-              </Link>
-              <Link href="/admin/create-admin">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="ml-3 hidden lg:block">Create Admin</span>
-                </p>
-              </Link>
+        <div className="h-full flex flex-col justify-between">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-8 text-center text-blue-600 dark:text-blue-400">
+              Recipe Circle
+            </h2>
+            <nav className="space-y-6">
+              {navLinks.map((link, index) => (
+                <Link key={index} href={link.href}>
+                  <p className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition">
+                    <span className="text-xl">{link.icon}</span>
+                    <span className="ml-4 font-medium">{link.label}</span>
+                  </p>
+                </Link>
+              ))}
             </nav>
           </div>
-        </div>
 
-        {/* Close Button on Mobile */}
-        <button
-          className="absolute top-4 right-4 lg:hidden text-gray-700 z-50"
-          onClick={toggleSidebar}
-        >
-          <FaTimes className="h-6 w-6" />
-        </button>
+          {/* Close Button (Mobile) */}
+          <button
+            className="absolute top-4 right-4 lg:hidden"
+            onClick={toggleSidebar}
+          >
+            <FaTimes className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+          </button>
+        </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div className="w-full lg:ml-72">
-        {/* Header on Mobile */}
-        <header className="lg:hidden flex justify-between items-center bg-white p-4 shadow-md">
-          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col lg:ml-64">
+        {/* Header (Mobile) */}
+        <header className="lg:hidden flex items-center justify-between bg-white dark:bg-gray-800 px-6 py-4 shadow-md">
+          <h1 className="text-xl font-bold">Dashboard</h1>
           <button onClick={toggleSidebar}>
-            <FaBars className="h-6 w-6 text-gray-700" />
+            <FaBars className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
         </header>
 
-        {/* Main Content Section */}
-        <main className="p-4">{children}</main>
-      </div>
+        {/* Page Content */}
+        <main className="flex-1 p-6">
+          <div className="mx-auto dark:bg-gray-800 h-full p-6">{children}</div>
+        </main>
 
-      {/* Sidebar Overlay for Small Devices */}
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 lg:hidden z-40"
-          onClick={toggleSidebar}
-        />
-      )}
+        {/* Footer */}
+        <footer className="py-4 bg-white dark:bg-gray-800 text-center text-sm text-gray-500 dark:text-gray-400">
+          © {new Date().getFullYear()} Recipe Circle. All rights reserved.
+        </footer>
+      </div>
     </div>
   );
 };
 
 export default UserDashboardLayout;
+
