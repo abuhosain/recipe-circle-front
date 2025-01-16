@@ -1,9 +1,4 @@
 "use client";
-
-import { useState } from "react";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
-import { ReactNode } from "react";
 import {
   FaHome,
   FaStar,
@@ -14,108 +9,84 @@ import {
   FaTimes,
 } from "react-icons/fa"; // Importing from Font Awesome
 
-import { useGetAuthUser } from "@/src/hooks/user.hook";
+import { useState } from "react";
+import Link from "next/link";
+import { ReactNode } from "react";
 
 const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
-  const { data: user } = useGetAuthUser();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  return (
-    <div className="min-h-screen flex">
-      {/* Side Navigation Bar */}
-      <aside
-        className={`${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed inset-y-0 z-30 left-0 bg-white shadow-lg w-64 lg:translate-x-0 transition-transform duration-300`}
-      >
-        <div className="h-full flex flex-col justify-between p-6 lg:p-8">
-          <div>
-            {/* Logo or Dashboard Title */}
-            <div className="mb-12 flex items-center">
-              <FaHome className="h-8 w-8 text-blue-500" />
-              <span className="ml-2 text-3xl lg:text-4xl font-bold text-gray-800 hidden lg:block">
-                Dashboard
-              </span>
-            </div>
-            {/* Navigation Links */}
-            <nav className="space-y-8 lg:space-y-12">
-              <Link href="/user">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaHome className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="ml-3 hidden lg:block">Dashboard</span>
-                </p>
-              </Link>
+  // Define navigation links
+  const navLinks = [
+    { href: "/user", label: "Dashboard", icon: <FaHome /> },
 
-              {/* Conditional Membership Link */}
-              {!user?.data?.isPremium && (
-                <Link href="/membership">
-                  <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                    <FaStar className="h-6 w-6 lg:h-7 lg:w-7" />
-                    <span className="ml-3 hidden lg:block">Membership</span>
+    {
+      href: "/user/create-recipe",
+      label: "Create Recipe",
+      icon: <FaPlusCircle />,
+    },
+    { href: "/user/edit-profile", label: "Update User", icon: <FaUserEdit /> },
+    { href: "/user/my-recipes", label: "My Recipes", icon: <FaBook /> },
+  ];
+
+  return (
+    <div className="flex h-screen text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-white dark:bg-gray-800 shadow-lg transition-transform duration-300 ease-in-out ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0`}
+      >
+        <div className="h-full flex flex-col justify-between">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-8 text-center text-blue-600 dark:text-blue-400">
+              Recipe Circle
+            </h2>
+            <nav className="space-y-6">
+              {navLinks.map((link, index) => (
+                <Link key={index} href={link.href}>
+                  <p className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition">
+                    <span className="text-xl">{link.icon}</span>
+                    <span className="ml-4 font-medium">{link.label}</span>
                   </p>
                 </Link>
-              )}
-
-              <Link href="/user/create-recipe">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaPlusCircle className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="ml-3 hidden lg:block">Create Recipe</span>
-                </p>
-              </Link>
-              <Link href="/user/edit-profile">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaUserEdit className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="ml-3 hidden lg:block">Update User</span>
-                </p>
-              </Link>
-              <Link href="/user/my-recipes">
-                <p className="flex mt-3 items-center text-gray-700 hover:text-blue-500 transition-colors duration-200 text-lg lg:text-xl">
-                  <FaBook className="h-6 w-6 lg:h-7 lg:w-7" />
-                  <span className="ml-3 hidden lg:block">My Recipes</span>
-                </p>
-              </Link>
+              ))}
             </nav>
           </div>
+
+          {/* Close Button (Mobile) */}
+          <button
+            className="absolute top-4 right-4 lg:hidden"
+            onClick={toggleSidebar}
+          >
+            <FaTimes className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+          </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div className="w-full flex flex-col lg:ml-64 ">
-        {/* Sidebar Toggle Button for Mobile */}
-        <div className="flex justify-between items-center bg-white p-4 shadow-lg lg:hidden z-50">
-          <button className="text-gray-700" onClick={toggleSidebar}>
-            {sidebarOpen ? (
-              <FaTimes className="h-8 w-8" />
-            ) : (
-              <FaBars className="h-8 w-8" />
-            )}
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col lg:ml-64">
+        {/* Header (Mobile) */}
+        <header className="lg:hidden flex items-center justify-between bg-white dark:bg-gray-800 px-6 py-4 shadow-md">
+          <h1 className="text-xl font-bold">Dashboard</h1>
+          <button onClick={toggleSidebar}>
+            <FaBars className="h-6 w-6 text-gray-600 dark:text-gray-300" />
           </button>
-          <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
-        </div>
+        </header>
 
-        {/* Membership Section
-        {!(user?.data?.isPremium || user?.data?.role === "admin") && (
-          <div className="bg-blue-50 rounded-lg shadow-md p-6 m-4 lg:m-8 text-center">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              Become a Premium Member
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Enjoy exclusive content and features by joining our membership!
-            </p>
-            <Link href="/membership">
-              <Button className="w-full" color="success">
-                Get Premium Membership
-              </Button>
-            </Link>
-          </div>
-        )} */}
+        {/* Page Content */}
+        <main className="flex-1 p-6">
+          <div className="mx-auto dark:bg-gray-800 h-full p-6">{children}</div>
+        </main>
 
-        {/* Main Content Section */}
-        <main className="flex-1 p-4 lg:p-8">{children}</main>
+        {/* Footer */}
+        <footer className="py-4 bg-white dark:bg-gray-800 text-center text-sm text-gray-500 dark:text-gray-400">
+          © {new Date().getFullYear()} Recipe Circle. All rights reserved.
+        </footer>
       </div>
     </div>
   );
