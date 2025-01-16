@@ -37,7 +37,7 @@ export const Navbar = () => {
       position="sticky"
     >
       {/* Left: Logo and Brand */}
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+      <NavbarContent className="basis-1/5 sm:basis-full" justify="center">
         <NavbarBrand as="li" className="gap-4 max-w-fit">
           <NextLink className="flex items-center gap-2" href="/">
             <Image
@@ -47,7 +47,7 @@ export const Navbar = () => {
               src={recipLogo}
               width={45}
             />
-            <span className="font-extrabold text-xl text-primary">RCircle</span>
+             
           </NextLink>
         </NavbarBrand>
         {/* Navigation Items */}
