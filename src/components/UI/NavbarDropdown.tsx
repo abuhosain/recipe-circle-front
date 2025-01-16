@@ -35,9 +35,9 @@ export default function NavbarDropdown() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <div className="flex items-center cursor-pointer relative">
+        <div className="flex items-center  cursor-pointer relative">
           {authUser?.data?.isPremium && (
-            <MdVerified className="text-2xl bg-white rounded-full top-0 absolute text-blue-500 z-20 right-6 " />
+            <MdVerified className="text-lg bg-white rounded-full top-0 absolute text-blue-500 z-20  " />
           )}
           <Avatar src={user?.profilePicture} />
         </div>

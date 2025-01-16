@@ -6,7 +6,9 @@ import { Navbar } from "@/src/components/UI/navbar";
 export default function layout({ children }: { children: ReactNode }) {
   return (
     <div className="relative flex flex-col h-screen">
+      <div className="block md:hidden">
       <Navbar />
+      </div>
       <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
         {children}
       </main>
