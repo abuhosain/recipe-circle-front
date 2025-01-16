@@ -22,10 +22,8 @@ export default function NavbarDropdown() {
   const handleLogout = () => {
     logOut();
     userLoading(true);
-
-    if (protectedRoutes.some((route: any) => pathname.match(route))) {
-      router.push("/login");
-    }
+    router.push("/login");
+    
   };
 
   const handleNavigation = (pathname: string) => {
