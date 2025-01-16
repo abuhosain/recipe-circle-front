@@ -4,8 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@nextui-org/react";
 import { SearchIcon } from "lucide-react";
-import axios from "axios";
-import Link from "next/link";
+import axios from "axios"; 
 import { Button } from "@nextui-org/button";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
@@ -115,62 +114,10 @@ export default function RecipeHome() {
 
   return (
     <Container>
-      {/* Left Sidebar */}
-      <div
-        className={`hidden md:fixed top-0 left-0 h-full w-0 md:w-64 bg-yellow-400 text-gray-800 shadow-lg p-6 pt-10   md:block`}
-      >
-        <div className="text-2xl font-semibold text-gray-900 mb-6">
-          Recipe Circle
-        </div>
-        <ul className="space-y-6">
-          {/* Home Link */}
-          <li>
-            <Link
-              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
-              href="/"
-            >
-              <FaHome className="w-5 h-5 text-gray-700 hover:text-white transition" />
-              <span>Home</span>
-            </Link>
-          </li>
-
-          {/* About Link */}
-          <li>
-            <Link
-              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
-              href="/about"
-            >
-              <FaInfoCircle className="w-5 h-5 text-gray-700 hover:text-white transition" />
-              <span>About</span>
-            </Link>
-          </li>
-
-          {/* Contact Link */}
-          <li>
-            <Link
-              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
-              href="/contact"
-            >
-              <FaPhoneAlt className="w-5 h-5 text-gray-700 hover:text-white transition" />
-              <span>Contact</span>
-            </Link>
-          </li>
-
-          {/* Settings Link */}
-          <li>
-            <Link
-              className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-white hover:bg-gray-900 px-4 py-2 rounded-lg transition"
-              href="/profile/settings"
-            >
-              <FaCog className="w-5 h-5 text-gray-700 hover:text-white transition" />
-              <span>Settings</span>
-            </Link>
-          </li>
-        </ul>
-      </div>
+ 
 
       {/* Main Content Area */}
-      <div className="md:ml-64 p-6">
+      <div className="">
         {/* Search Bar and Advanced Search Button */}
         <div className="mb-4 p-6 bg-gradient-to-r from-yellow-50 via-white to-yellow-50 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-b-lg sticky top-0 z-20 border border-gray-300 dark:border-gray-700">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
