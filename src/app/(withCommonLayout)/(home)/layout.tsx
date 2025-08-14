@@ -79,7 +79,7 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
         </main>
 
         {/* Footer */}
-        <footer className="py-4 bg-white dark:bg-gray-800 text-center text-sm text-gray-500 dark:text-gray-400">
+        <footer className="py-4 bg-white dark:bg-gray-800 sticky bottom-0 text-center text-sm text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} Recipe Circle. All rights reserved.
         </footer>
       </div>
