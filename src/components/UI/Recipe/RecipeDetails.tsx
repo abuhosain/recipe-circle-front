@@ -21,7 +21,6 @@ interface IProps {
 }
 
 export default function RecipeDetails({ recipe, user }: IProps) {
-  console.log(recipe);
   const [totalVotes, setTotalVotes] = useState(recipe?.voteScore || 0);
 
   // Use the custom mutation hook for voting

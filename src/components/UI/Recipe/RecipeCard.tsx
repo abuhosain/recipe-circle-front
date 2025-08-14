@@ -6,14 +6,22 @@ import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import Image from "next/image";
 import Link from "next/link";
+import VoteComponent from "./RecipeVote";
+import { useVote } from "@/src/hooks/recipe.hook";
 
 export default function RecipeCard({ recipe }: { recipe: IRecipe }) {
+  // Use the custom mutation hook for voting
+  const { mutate: voteRecipe, data } = useVote();
+
+  const handleVote = (voteValue: 1 | -1 | 0) => {
+    voteRecipe({ recipeId: recipe?._id, voteValue });
+  };
   return (
     <div className="w-80 h-96 bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105">
       <div className="relative h-48">
         <Image
           alt={recipe.title}
-          className="transition-transform duration-300 ease-in-out hover:scale-110"
+          className="transition-transform duration-300 ease-in-out hover:scale-101"
           layout="fill"
           objectFit="cover"
           src={recipe.images[0]}
@@ -28,8 +36,8 @@ export default function RecipeCard({ recipe }: { recipe: IRecipe }) {
           {recipe.isPremium ? "PREMIUM" : "FREE"}
         </span>
       </div>
-      <div className="p-4 flex flex-col justify-between h-48">
-        <div>
+      <div className="  flex flex-col justify-between h-48">
+        <div className="px-4">
           <h2 className="text-xl font-bold mb-2 line-clamp-2 text-gray-800">
             {recipe.title}
           </h2>
@@ -53,7 +61,14 @@ export default function RecipeCard({ recipe }: { recipe: IRecipe }) {
             </Link>
           </p>
         </div>
-        <Link className="block w-full mt-auto" href={`/recipes/${recipe._id}`}>
+        <div className="">
+          <VoteComponent
+            initialTotalVotes={recipe?.voteScore || 0}
+            initialVote={0}
+            onVote={handleVote}
+          />
+        </div>
+        <Link className="  w-full mt-3 " href={`/recipes/${recipe._id}`}>
           <button className="w-full px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-md transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
             View Recipe
           </button>

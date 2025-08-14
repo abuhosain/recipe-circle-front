@@ -52,12 +52,7 @@ export default function VoteComponent({
   };
 
   return (
-    <div className="flex items-center gap-4">
-      {/* Display total votes */}
-      <div className="text-lg font-bold">
-        {totalVotes} Vote{totalVotes !== 1 ? "s" : ""}
-      </div>
-
+    <div className="flex items-center  justify-between">
       {/* Upvote button */}
       <Tooltip content={vote === 1 ? "Remove Upvote" : "Upvote"}>
         <Button
@@ -68,7 +63,10 @@ export default function VoteComponent({
           <FaThumbsUp size={20} />
         </Button>
       </Tooltip>
-
+      {/* Display total votes */}
+      <div className="text-lg font-bold">
+        {totalVotes} Vote{totalVotes !== 1 ? "s" : ""}
+      </div>
       {/* Downvote button */}
       <Tooltip content={vote === -1 ? "Remove Downvote" : "Downvote"}>
         <Button
