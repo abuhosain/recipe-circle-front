@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/button";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect } from "react";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import loginValidationSchema from "@/src/schemas/login.schema";
@@ -18,7 +18,7 @@ function Login() {
   const { setIsLoading: userLoading } = useUser();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const redirect = searchParams?.get("redirect"); // Ensure safe access to searchParams
+  const redirect = searchParams?.get("redirect");
   const {
     mutate: handleUserLogin,
     isPending,
@@ -26,9 +26,21 @@ function Login() {
     data,
   } = useUserLogin();
 
+  // <CHANGE> Added form methods to control form values
+  const methods = useForm({
+    resolver: zodResolver(loginValidationSchema),
+  });
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     handleUserLogin(data);
     userLoading(true);
+  };
+
+  // <CHANGE> Added demo credentials handler
+  const fillDemoCredentials = () => {
+    methods.setValue("email", "user@gmail.com");
+    methods.setValue("password", "123456");
+    toast.info("Demo credentials filled!");
   };
 
   useEffect(() => {
@@ -51,9 +63,32 @@ function Login() {
         <h3 className="my-2 text-2xl font-bold">Login with Recipe Circle</h3>
         <p className="mb-4">Welcome Back! Let&lsquo;s Get Started</p>
         <div className="w-[35%]">
+          {/* <CHANGE> Added demo credentials section */}
+          <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-semibold text-blue-800">Demo Account</h4>
+                <p className="text-xs text-blue-600">
+                  Email: user@gmail.com | Password: 123456
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="flat"
+                color="primary"
+                onClick={fillDemoCredentials}
+                className="text-xs"
+              >
+                Use Demo
+              </Button>
+            </div>
+          </div>
+
           <FXForm
             resolver={zodResolver(loginValidationSchema)}
             onSubmit={onSubmit}
+            // <CHANGE> Pass form methods to FXForm
+            {...methods}
           >
             <div className="py-3">
               <FXInput label="Email" name="email" type="email" />
