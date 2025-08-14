@@ -1,12 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  FaUsers,
-  FaClipboardList,
-  FaChartPie,
-  FaPlusCircle,
-} from "react-icons/fa"; // Importing icons
+import { Users, ClipboardList, PieChart, PlusCircle } from "lucide-react"; // Lucide React icons
 
 import UserProfileDetails from "@/src/components/UI/userDashboard/UserProfileDetails";
 import { useGetAuthUser } from "@/src/hooks/user.hook";
@@ -50,21 +45,21 @@ export default function UserDashboard() {
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div className="bg-white p-4 rounded-lg shadow-md flex items-center">
-              <FaUsers className="h-8 w-8 text-blue-500 mr-4" />
+              <Users size={32} className="text-blue-500 mr-4" />
               <div>
                 <h3 className="text-lg font-bold">{stats.totalUsers}</h3>
                 <p className="text-gray-600">Total Users</p>
               </div>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-md flex items-center">
-              <FaClipboardList className="h-8 w-8 text-blue-500 mr-4" />
+              <ClipboardList size={32} className="text-blue-500 mr-4" />
               <div>
                 <h3 className="text-lg font-bold">{stats.totalRecipes}</h3>
                 <p className="text-gray-600">Total Recipes</p>
               </div>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-md flex items-center">
-              <FaChartPie className="h-8 w-8 text-blue-500 mr-4" />
+              <PieChart size={32} className="text-blue-500 mr-4" />
               <div>
                 <h3 className="text-lg font-bold">{stats.pendingApprovals}</h3>
                 <p className="text-gray-600">Pending Approvals</p>
@@ -74,15 +69,14 @@ export default function UserDashboard() {
 
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div className="bg-blue-500 text-white p-4 rounded-lg shadow-md flex items-center justify-center cursor-pointer hover:bg-blue-600 transition">
-              <FaPlusCircle className="h-6 w-6 mr-2" />
-              <Link href={"/admin/create-admin"}>
-                {" "}
+            <Link href={"/admin/create-admin"}>
+              <div className="bg-blue-500 text-white p-4 rounded-lg shadow-md flex items-center justify-center cursor-pointer hover:bg-blue-600 transition">
+                <PlusCircle size={24} className="mr-2" />
                 <span>Add New Admin</span>
-              </Link>
-            </div>
+              </div>
+            </Link>
             <div className="bg-blue-500 text-white p-4 rounded-lg shadow-md flex items-center justify-center cursor-pointer hover:bg-blue-600 transition">
-              <FaUsers className="h-6 w-6 mr-2" />
+              <Users size={24} className="mr-2" />
               <span>Manage Users</span>
             </div>
           </div>

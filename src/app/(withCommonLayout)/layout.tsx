@@ -17,13 +17,8 @@ export default function Layout({ children }: { children: ReactNode }) {
       </div>
 
       <main className="container mx-auto max-w-7xl flex-grow">
-        {user?.data &&  
-          !(
-            (
-              user?.data?.isPremium ||  
-              user?.data?.role === "admin"
-            )  
-          ) && (
+        {user?.data &&
+          !(user?.data?.isPremium || user?.data?.role === "admin") && (
             <div className="bg-blue-50 rounded-lg shadow-md p-6 m-4 lg:m-8 text-center">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">
                 Become a Premium Member

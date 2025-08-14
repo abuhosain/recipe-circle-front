@@ -1,19 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import Link from "next/link";
-import { ReactNode } from "react";
-import {
-  FaHome,
-  FaInfoCircle,
-  FaUsers,
-  FaEnvelope,
-  FaCog,
-  FaBars,
-  FaTimes,
-  FaTachometerAlt,
-} from "react-icons/fa";
 import NavbarDropdown from "@/src/components/UI/NavbarDropdown";
+
+// Import icons from lucide-react instead of react-icons
+import { Home, Info, Users, Mail, Settings, X } from "lucide-react";
 
 const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,11 +15,11 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
   };
 
   const navLinks = [
-    { href: "/", label: "Home", icon: <FaHome /> },
-    { href: "/about", label: "About", icon: <FaInfoCircle /> },
-    { href: "/friend", label: "Friends", icon: <FaUsers /> },
-    { href: "/contact", label: "Contact", icon: <FaEnvelope /> },
-    { href: "/profile/settings", label: "Settings", icon: <FaCog /> },
+    { href: "/", label: "Home", icon: <Home /> },
+    { href: "/about", label: "About", icon: <Info /> },
+    { href: "/friend", label: "Friends", icon: <Users /> },
+    { href: "/contact", label: "Contact", icon: <Mail /> },
+    { href: "/profile/settings", label: "Settings", icon: <Settings /> },
   ];
 
   return (
@@ -45,19 +37,17 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
             </h2>
             <nav className="space-y-6">
               <div className="flex items-center justify-center px-4 py-3">
-              <NavbarDropdown  />
+                <NavbarDropdown />
               </div>
               <hr />
-            
               {navLinks.map((link, index) => (
                 <Link key={index} href={link.href}>
-                  <p className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition">
+                  <p className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition cursor-pointer">
                     <span className="text-xl">{link.icon}</span>
                     <span className="ml-4 font-medium">{link.label}</span>
                   </p>
                 </Link>
               ))}
-              
             </nav>
           </div>
 
@@ -66,19 +56,19 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
             className="absolute top-4 right-4 hidden"
             onClick={toggleSidebar}
           >
-            <FaTimes className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+            <X className="h-6 w-6 text-gray-500 dark:text-gray-400" />
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col  ">
-        {/* Page Content */}
+      <div className="flex-1 flex flex-col">
         <main className="">
-          <div className="mx-auto dark:bg-gray-800 h-full max-w-4xl mx-auto">{children}</div>
+          <div className="mx-auto dark:bg-gray-800 h-full max-w-4xl">
+            {children}
+          </div>
         </main>
 
-        {/* Footer */}
         <footer className="py-4 bg-white dark:bg-gray-800 sticky bottom-0 text-center text-sm text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} Recipe Circle. All rights reserved.
         </footer>
@@ -88,4 +78,3 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
 };
 
 export default AdminDashboardLayout;
- 

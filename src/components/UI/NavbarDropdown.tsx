@@ -23,7 +23,6 @@ export default function NavbarDropdown() {
     logOut();
     userLoading(true);
     router.push("/login");
-    
   };
 
   const handleNavigation = (pathname: string) => {

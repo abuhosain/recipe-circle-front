@@ -1,16 +1,16 @@
-"use client"; 
+"use client";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@nextui-org/react";
 import { SearchIcon } from "lucide-react";
-import axios from "axios"; 
+import axios from "axios";
 import { Button } from "@nextui-org/button";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
 import RecipeCard from "../Recipe/RecipeCard";
 import Container from "../Container";
- 
+
 import envConfig from "@/src/config/env.confg";
 import { IRecipe } from "@/src/types";
 import useDebounce from "@/src/hooks/debounce.hook";
@@ -25,7 +25,7 @@ const axiosClient = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-export default function RecipeHome() { 
+export default function RecipeHome() {
   const { register, watch } = useForm();
   const searchTerm = useDebounce(watch("search"), 500);
   const [items, setItems] = useState<IRecipe[]>([]);
@@ -157,7 +157,6 @@ export default function RecipeHome() {
             {items.map((recipe) => (
               <RecipeCard key={recipe._id} recipe={recipe} />
             ))}
-            
           </div>
           {loading && <p className="text-center mt-4">Loading...</p>}
         </main>

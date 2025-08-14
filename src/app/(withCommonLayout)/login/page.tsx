@@ -67,7 +67,9 @@ function Login() {
           <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-sm font-semibold text-blue-800">Demo Account</h4>
+                <h4 className="text-sm font-semibold text-blue-800">
+                  Demo Account
+                </h4>
                 <p className="text-xs text-blue-600">
                   Email: user@gmail.com | Password: 123456
                 </p>

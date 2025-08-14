@@ -6,8 +6,8 @@ import UserTable from "@/src/components/UI/adminDashboard/UserTable";
 import { useGetAllUser } from "@/src/hooks/admin.hook";
 
 export default function ManageUsers() {
-  const { data, isLoading } = useGetAllUser(); 
- 
+  const { data, isLoading } = useGetAllUser();
+
   const [users, setUsers] = useState(data?.data || []);
 
   // Effect to update the users state when data changes

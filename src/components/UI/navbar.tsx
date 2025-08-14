@@ -47,7 +47,6 @@ export const Navbar = () => {
               src={recipLogo}
               width={45}
             />
-             
           </NextLink>
         </NavbarBrand>
         {/* Navigation Items */}

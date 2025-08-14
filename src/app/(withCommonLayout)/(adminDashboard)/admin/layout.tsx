@@ -1,17 +1,8 @@
- 
 "use client";
-import {
-  FaHome,
-   
-  FaUserEdit,
-  FaBook,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa"; // Importing from Font Awesome
 
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { Home, User, Book, Users } from "lucide-react"; // Lucide React icons
 
 const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,14 +11,25 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // Define navigation links
+  // Navigation links with Lucide icons
   const navLinks = [
-    { href: "/", label: "Home", icon: <FaHome /> },
-    { href: "/admin/manage-recipes", label: "Manage Recipes", icon: <FaBook /> },
-    { href: "/admin/manage-users", label: "Manage Users", icon: <FaUserEdit /> },
-    { href: "/admin/create-admin", label: "Create Admin", icon: <FaUserEdit /> }
+    { href: "/", label: "Home", icon: <Home size={20} /> },
+    {
+      href: "/admin/manage-recipes",
+      label: "Manage Recipes",
+      icon: <Book size={20} />,
+    },
+    {
+      href: "/admin/manage-users",
+      label: "Manage Users",
+      icon: <Users size={20} />,
+    },
+    {
+      href: "/admin/create-admin",
+      label: "Create Admin",
+      icon: <User size={20} />,
+    },
   ];
-  
 
   return (
     <div className="flex h-screen text-gray-900 dark:bg-gray-900 dark:text-gray-100">
@@ -45,7 +47,7 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
             <nav className="space-y-6">
               {navLinks.map((link, index) => (
                 <Link key={index} href={link.href}>
-                  <p className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition">
+                  <p className="flex items-center px-4 py-3 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 transition cursor-pointer">
                     <span className="text-xl">{link.icon}</span>
                     <span className="ml-4 font-medium">{link.label}</span>
                   </p>
@@ -59,7 +61,7 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
             className="absolute top-4 right-4 lg:hidden"
             onClick={toggleSidebar}
           >
-            <FaTimes className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+            <Book size={24} className="text-gray-500 dark:text-gray-400" />
           </button>
         </div>
       </aside>
@@ -70,7 +72,7 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
         <header className="lg:hidden flex items-center justify-between bg-white dark:bg-gray-800 px-6 py-4 shadow-md">
           <h1 className="text-xl font-bold">Dashboard</h1>
           <button onClick={toggleSidebar}>
-            <FaBars className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+            <Book size={24} className="text-gray-600 dark:text-gray-300" />
           </button>
         </header>
 
@@ -89,4 +91,3 @@ const UserDashboardLayout = ({ children }: { children: ReactNode }) => {
 };
 
 export default UserDashboardLayout;
-
