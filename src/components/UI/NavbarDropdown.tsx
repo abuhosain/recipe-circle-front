@@ -41,10 +41,16 @@ export default function NavbarDropdown() {
         </div>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
-        <DropdownItem onClick={() => handleNavigation(`/${user?.role}`)}>
+        <DropdownItem
+          onClick={() => handleNavigation(`/${user?.role}`)}
+          key={""}
+        >
           Dashboard
         </DropdownItem>
-        <DropdownItem onClick={() => handleNavigation("/profile/settings")}>
+        <DropdownItem
+          onClick={() => handleNavigation("/profile/settings")}
+          key={""}
+        >
           Settings
         </DropdownItem>
 

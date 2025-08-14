@@ -73,17 +73,9 @@ const AdminDashboardLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col  ">
-        {/* Header (Mobile) */}
-        {/* <header className="lg:hidden flex items-center justify-between bg-white dark:bg-gray-800 px-6 py-4 shadow-md">
-          <h1 className="text-xl font-bold">Dashboard</h1>
-          <button onClick={toggleSidebar}>
-            <FaBars className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-          </button>
-        </header> */}
-
         {/* Page Content */}
         <main className="">
-          <div className="mx-auto dark:bg-gray-800 h-full ">{children}</div>
+          <div className="mx-auto dark:bg-gray-800 h-full max-w-4xl mx-auto">{children}</div>
         </main>
 
         {/* Footer */}
