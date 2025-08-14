@@ -1,5 +1,4 @@
-"use client";
-import { FaHome, FaInfoCircle, FaPhoneAlt, FaCog } from "react-icons/fa";
+"use client"; 
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@nextui-org/react";
@@ -11,8 +10,7 @@ import Swal from "sweetalert2";
 
 import RecipeCard from "../Recipe/RecipeCard";
 import Container from "../Container";
-
-import { useGetAuthUser } from "@/src/hooks/user.hook";
+ 
 import envConfig from "@/src/config/env.confg";
 import { IRecipe } from "@/src/types";
 import useDebounce from "@/src/hooks/debounce.hook";
@@ -27,8 +25,7 @@ const axiosClient = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-export default function RecipeHome() {
-  const { data: user } = useGetAuthUser();
+export default function RecipeHome() { 
   const { register, watch } = useForm();
   const searchTerm = useDebounce(watch("search"), 500);
   const [items, setItems] = useState<IRecipe[]>([]);
@@ -114,13 +111,11 @@ export default function RecipeHome() {
 
   return (
     <Container>
- 
-
       {/* Main Content Area */}
       <div className="">
         {/* Search Bar and Advanced Search Button */}
-        <div className="mb-4 p-6 bg-gradient-to-r from-yellow-50 via-white to-yellow-50 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-b-lg sticky top-0 z-20 border border-gray-300 dark:border-gray-700">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="flex justify-center  w-2/3 mx-auto mb-4 p-6 bg-gradient-to-r  from-yellow-50 via-white to-yellow-50 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-b-lg sticky top-0 z-20 border border-gray-300 dark:border-gray-700">
+          <div className="flex flex-col sm:flex-row justify-between items-center w-full  gap-4">
             <form className="w-full">
               <Input
                 {...register("search")}
@@ -139,7 +134,7 @@ export default function RecipeHome() {
 
             {/* Button for Advanced Search (Hidden on Small Devices) */}
             <Button
-              className="hidden md:block bg-primary text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300 w-1/4"
+              className="hidden md:block bg-primary text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition duration-300 w-full"
               onClick={() =>
                 Swal.fire({
                   title: "Advanced Search",
