@@ -114,7 +114,7 @@ export default function RecipeHome() {
       {/* Main Content Area */}
       <div className="">
         {/* Search Bar and Advanced Search Button */}
-        <div className="flex justify-center  w-2/3 mx-auto mb-4 p-6 bg-gradient-to-r  from-yellow-50 via-white to-yellow-50 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-b-lg sticky top-0 z-20 border border-gray-300 dark:border-gray-700">
+        <div className="flex justify-center  w-2/3 mx-auto mb-4 p-6 bg-gradient-to-r  from-yellow-50 via-white to-yellow-50 dark:from-gray-800 dark:to-gray-900 shadow-lg rounded-b-lg  z-20 border border-gray-300 dark:border-gray-700">
           <div className="flex flex-col sm:flex-row justify-between items-center w-full  gap-4">
             <form className="w-full">
               <Input
@@ -157,9 +157,7 @@ export default function RecipeHome() {
             {items.map((recipe) => (
               <RecipeCard key={recipe._id} recipe={recipe} />
             ))}
-            {items.map((recipe) => (
-              <RecipeCard key={recipe._id} recipe={recipe} />
-            ))}
+            
           </div>
           {loading && <p className="text-center mt-4">Loading...</p>}
         </main>
